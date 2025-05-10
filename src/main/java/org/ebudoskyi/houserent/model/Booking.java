@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "booking_data")
@@ -29,11 +29,11 @@ public class Booking {
 
     @NotNull
     @Column(nullable = false)
-    private Date startDate;
+    private LocalDate startDate;
 
     @NotNull
     @Column(nullable = false)
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotNull
     @Column(nullable = false)

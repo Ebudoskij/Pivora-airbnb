@@ -5,14 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AvailabilityDTO {
+public class MessageDTO {
     private Long id;
-    private Long propertyId;
-    private LocalDate availableDate;
+    private Long fromUserId;
+    private Long toUserId;
+    private String content;
+    private LocalDateTime timestamp;
 }

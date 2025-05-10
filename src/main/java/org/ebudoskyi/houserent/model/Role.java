@@ -1,6 +1,6 @@
 package org.ebudoskyi.houserent.model;
 
-public enum RoleEnum {
+public enum Role {
     OWNER,
     TENANT
 }

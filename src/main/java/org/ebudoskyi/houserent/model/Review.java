@@ -37,7 +37,7 @@ public class Review {
 
     @NotBlank
     @Column(nullable = false)
-    private String comment;
+    private String content;
 
     @NotNull
     @Column(nullable = false)
