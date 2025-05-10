@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пошук Житла</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Вітання на платформі онлайн-оренди житла</h1>
+  </header>
+
+  <section>
+    <h2>Шукаєте житло?</h2>
+    <form action="/search" method="get">
+      <input type="text" name="location" placeholder="Місто чи район">
+      <input type="date" name="checkIn">
+      <input type="date" name="checkOut">
+      <button type="submit">Пошук</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Популярні міста</h2>
+    <ul>
+      <li><a href="/properties/kyiv">Київ</a></li>
+      <li><a href="/properties/lviv">Львів</a></li>
+      <li><a href="/properties/odesa">Одеса</a></li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>
