@@ -195,7 +195,6 @@ body {
 .property-img {
     height: 200px;
     background-color: #ddd;
-    background-image: url('/api/placeholder/400/320');
     background-size: cover;
     background-position: center;
 }

@@ -3,94 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Деталі Нерухомості</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <title>Деталі нерухомості</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container">
-  <h1>{{property.title}}</h1>
-  <p>{{property.description}}</p>
-  <p>Ціна за ніч: {{property.pricePerNight}} грн</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Accomodation Search</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/index">Головна</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/search">Пошук</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Вхід</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Реєстрація</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
-  <form action="/book/{{property.id}}" method="post">
-    <label for="checkIn">Дата заїзду:</label>
-    <input type="date" name="checkIn" required>
-    <label for="checkOut">Дата виїзду:</label>
-    <input type="date" name="checkOut" required>
-    <button type="submit">Забронювати</button>
-  </form>
-</div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Деталі Нерухомості</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<div class="container">
-  <h1>{{property.title}}</h1>
-  <p>{{property.description}}</p>
-  <p>Ціна за ніч: {{property.pricePerNight}} грн</p>
+<div class="container mt-5">
+  <!-- Деталі нерухомості -->
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Зображення нерухомості -->
+      <img src="https://via.placeholder.com/600x400" alt="Property Image" class="img-fluid">
+    </div>
+    <div class="col-md-6">
+      <h2>Квартира в центрі міста</h2>
+      <p><strong>Ціна:</strong> 5000 грн/міс</p>
+      <p><strong>Опис:</strong> Простора та сучасна квартира з двома спальнями та великою кухнею. Зручний доступ до громадського транспорту, магазини та ресторани поруч.</p>
+      <p><strong>Адреса:</strong> Київ, вулиця Хрещатик, 12</p>
+      <p><strong>Тип житла:</strong> Квартира</p>
 
-  <form action="/book/{{property.id}}" method="post">
-    <label for="checkIn">Дата заїзду:</label>
-    <input type="date" name="checkIn" required>
-    <label for="checkOut">Дата виїзду:</label>
-    <input type="date" name="checkOut" required>
-    <button type="submit">Забронювати</button>
-  </form>
-</div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Деталі Нерухомості</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<div class="container">
-  <h1>{{property.title}}</h1>
-  <p>{{property.description}}</p>
-  <p>Ціна за ніч: {{property.pricePerNight}} грн</p>
+      <!-- Форма для бронювання -->
+      <form method="POST" action="/booking" class="mt-4">
+        <div class="form-group">
+          <label for="checkinDate">Дата заїзду</label>
+          <input type="date" class="form-control" id="checkinDate" name="checkinDate" required>
+        </div>
+        <div class="form-group">
+          <label for="checkoutDate">Дата виїзду</label>
+          <input type="date" class="form-control" id="checkoutDate" name="checkoutDate" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Забронювати</button>
+      </form>
+    </div>
+  </div>
 
-  <form action="/book/{{property.id}}" method="post">
-    <label for="checkIn">Дата заїзду:</label>
-    <input type="date" name="checkIn" required>
-    <label for="checkOut">Дата виїзду:</label>
-    <input type="date" name="checkOut" required>
-    <button type="submit">Забронювати</button>
-  </form>
-</div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Деталі Нерухомості</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<div class="container">
-  <h1>{{property.title}}</h1>
-  <p>{{property.description}}</p>
-  <p>Ціна за ніч: {{property.pricePerNight}} грн</p>
+  <!-- Відгуки -->
+  <div class="mt-5">
+    <h3>Відгуки</h3>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Іван</h5>
+        <p class="card-text">Прекрасне місце для відпочинку, все дуже чисто та комфортно!</p>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Марина</h5>
+        <p class="card-text">Зручне розташування, дуже сподобалася квартира!</p>
+      </div>
+    </div>
 
-  <form action="/book/{{property.id}}" method="post">
-    <label for="checkIn">Дата заїзду:</label>
-    <input type="date" name="checkIn" required>
-    <label for="checkOut">Дата виїзду:</label>
-    <input type="date" name="checkOut" required>
-    <button type="submit">Забронювати</button>
-  </form>
+    <!-- Форма для написання відгуку -->
+    <form method="POST" action="/review" class="mt-4">
+      <div class="form-group">
+        <label for="reviewText">Ваш відгук</label>
+        <textarea class="form-control" id="reviewText" name="reviewText" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Додати відгук</button>
+    </form>
+  </div>
 </div>
+
+<footer class="bg-light text-center py-3 mt-5">
+  <p>&copy; 2025 Accomodation Search. Усі права захищені.</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

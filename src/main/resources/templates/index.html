@@ -3,33 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Пошук Житла</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <title>Pivo - Пошук житла</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>Вітання на платформі онлайн-оренди житла</h1>
-  </header>
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Pivo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">Головна</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html">Вхід</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="register.html">Реєстрація</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-  <section>
-    <h2>Шукаєте житло?</h2>
-    <form action="/search" method="get">
-      <input type="text" name="location" placeholder="Місто чи район">
-      <input type="date" name="checkIn">
-      <input type="date" name="checkOut">
-      <button type="submit">Пошук</button>
-    </form>
-  </section>
+<div class="home-container">
+  <div class="home-search-section">
+    <div class="hero-text">
+      <h1 class="home-title">
+        Шукай на
+        <div class="pivo-logo">Pivo</div>
+      </h1>
+      <div class="from-lun">
+        <span>від</span>
+        <div class="pivo-circle">Pivo</div>
+      </div>
+    </div>
 
-  <section>
-    <h2>Популярні міста</h2>
-    <ul>
-      <li><a href="/properties/kyiv">Київ</a></li>
-      <li><a href="/properties/lviv">Львів</a></li>
-      <li><a href="/properties/odesa">Одеса</a></li>
-    </ul>
-  </section>
+    <div class="hero-search">
+      <div class="property-type-label">
+        Продаж нерухомості
+      </div>
+      <input type="text" class="search-input" placeholder="Київ" />
+      <button class="search-button">ПОШУК</button>
+    </div>
+  </div>
 </div>
+
+<div class="main-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="text-center mb-4">Популярні пропозиції</h2>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="property-card">
+          <div class="property-img"></div>
+          <div class="property-info">
+            <h3>Квартира в центрі міста</h3>
+            <p class="property-address">вул. Хрещатик, 10, Київ</p>
+            <p class="property-price">$120,000</p>
+            <p class="property-details">2 кімнати • 60 м² • 5/9 поверх</p>
+            <a href="#" class="property-link">Детальніше</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="property-card">
+          <div class="property-img"></div>
+          <div class="property-info">
+            <h3>Затишний будинок за містом</h3>
+            <p class="property-address">вул. Соснова, 25, Буча</p>
+            <p class="property-price">$200,000</p>
+            <p class="property-details">4 кімнати • 150 м² • 2 поверхи</p>
+            <a href="#" class="property-link">Детальніше</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="property-card">
+          <div class="property-img"></div>
+          <div class="property-info">
+            <h3>Сучасна квартира у новобудові</h3>
+            <p class="property-address">вул. Драгоманова, 15, Київ</p>
+            <p class="property-price">$85,000</p>
+            <p class="property-details">1 кімната • 45 м² • 8/24 поверх</p>
+            <a href="#" class="property-link">Детальніше</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-light text-center py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Про нас</h5>
+        <p>Pivo - найкращий сервіс пошуку житла в Україні</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Корисні посилання</h5>
+        <ul class="list-unstyled">
+          <li><a href="#">Як працює сервіс</a></li>
+          <li><a href="#">Часті запитання</a></li>
+          <li><a href="#">Підтримка</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Контакти</h5>
+        <p>Email: info@pivo.ua</p>
+        <p>Телефон: +380 44 123 45 67</p>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <p>&copy; 2025 Pivo. Усі права захищені.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

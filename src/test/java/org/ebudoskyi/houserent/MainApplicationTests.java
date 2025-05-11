@@ -1,4 +1,4 @@
-package com.example.main;
+package org.ebudoskyi.houserent;
 
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
