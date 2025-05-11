@@ -9,18 +9,18 @@ public class UserController {
     @GetMapping("/register")
     public String showRegistrationForm() {
         // Повертаємо сторінку для реєстрації
-        return "index"; // Використовуємо шаблон index.html
+        return "dashboard"; // Використовуємо шаблон index.html
     }
 
     @GetMapping("/login")
     public String showLoginForm() {
         // Повертаємо сторінку для входу
-        return "index"; // Використовуємо шаблон index.html
+        return "dashboard"; // Використовуємо шаблон index.html
     }
 
     @GetMapping("/profile")
     public String showUserProfile() {
         // Повертаємо сторінку профілю користувача
-        return "index"; // Використовуємо шаблон index.html
+        return "dashboard"; // Використовуємо шаблон index.html
     }
 }
