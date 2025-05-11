@@ -29,6 +29,10 @@ public class Property {
 
     @NotBlank
     @Column(nullable = false)
+    private String city;
+
+    @NotBlank
+    @Column(nullable = false)
     private String location;
 
     @Positive(message = "Price should be a positive number")
@@ -42,9 +46,6 @@ public class Property {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
-
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Availability> availabilities = new ArrayList<>();
 
     @OneToMany(mappedBy = "property")
     private List<Booking>  bookings = new ArrayList<>();

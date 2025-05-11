@@ -8,21 +8,30 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class PropertyDTO {
+public class PropertyResponseDTO {
     private Long id;
     private String title;
     private String description;
+    private String city;
     private String location;
     private double pricePerNight;
     private int rooms;
     private Long ownerId;
-    private List<Long> availabilitiesIds = new ArrayList<>();
     private List<Long>  bookingsIds = new ArrayList<>();
     private List<Long>  reviewsIds = new ArrayList<>();
-    public PropertyDTO(Long id, String title, String description, String location, double pricePerNight, int rooms,  Long ownerId) {
+    public PropertyResponseDTO(
+            Long id,
+            String title,
+            String description,
+            String city,
+            String location,
+            double pricePerNight,
+            int rooms,
+            Long ownerId) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.city = city;
         this.location = location;
         this.pricePerNight = pricePerNight;
         this.rooms = rooms;

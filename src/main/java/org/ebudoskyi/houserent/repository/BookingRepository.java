@@ -22,5 +22,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByPropertyIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
             Long propertyId, LocalDate date);
+
+    boolean existsByPropertyIdAndStartDateBetweenOrEndDateBetween(Long propertyId, LocalDate startDate, LocalDate endDate, LocalDate startDate1, LocalDate endDate1);
 }
 
