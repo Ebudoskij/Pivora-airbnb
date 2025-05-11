@@ -1,21 +1,21 @@
 package org.ebudoskyi.houserent.mapper;
 
-import org.ebudoskyi.houserent.dto.UserDTO;
+import org.ebudoskyi.houserent.dto.UserRegisterDTO;
+import org.ebudoskyi.houserent.dto.UserResponseDTO;
 import org.ebudoskyi.houserent.model.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
 
-    public UserDTO toDTO(User user) {
+    public UserResponseDTO toDTO(User user) {
         if (user == null) {
             return null;
         }
-        UserDTO userDTO = new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole());
+        UserResponseDTO userDTO = new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
         if (user.getOwnedProperties() != null) {
             List<Long> propertyIds = user.getOwnedProperties().stream()
                     .map(Property::getId)
@@ -49,7 +49,7 @@ public class UserMapper {
         return userDTO;
     }
 
-    public User toEntity(UserDTO userDTO) {
+    public User toEntity(UserResponseDTO userDTO) {
         if (userDTO == null) {
             return null;
         }
@@ -57,11 +57,23 @@ public class UserMapper {
         user.setId(userDTO.getId());
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
         return user;
     }
 
-    public List<UserDTO> toDTOList(List<User> users) {
+    public User toEntity(UserRegisterDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        return user;
+    }
+
+
+
+    public List<UserResponseDTO> toDTOList(List<User> users) {
         if (users == null) {
             return null;
         }
@@ -69,7 +81,7 @@ public class UserMapper {
         return users.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public List<User>  toEntityList(List<UserDTO> userDTOs) {
+    public List<User>  toEntityList(List<UserResponseDTO> userDTOs) {
         if (userDTOs == null) {
             return null;
         }

@@ -14,9 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class BookingDTO {
-    private Long id;
-    private Long propertyId;
-    private Long tenantId;
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalPrice;
