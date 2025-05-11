@@ -153,6 +153,62 @@ body {
     font-size: 16px;
 }
 
+/* Стилі для календарів */
+.date-picker-container {
+    margin-bottom: 15px;
+}
+
+.date-label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--secondary-color);
+    display: block;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-group-append {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.calendar-icon {
+    background: transparent;
+    border: none;
+    color: #777;
+}
+
+/* Стилі для підключеного календаря datepicker */
+.datepicker {
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.datepicker-dropdown {
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e1e1;
+}
+
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.highlighted.active,
+.datepicker table tr td.active.highlighted:active,
+.datepicker table tr td.active:active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.datepicker table tr td.day:hover {
+    background-color: var(--light-bg);
+}
+
 .search-button {
     width: 100%;
     background-color: var(--accent-color);
@@ -164,6 +220,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
 .search-button:hover {
