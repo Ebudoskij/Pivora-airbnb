@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class BookingController {
 
-    // Мапінг для сторінки бронювання
-    @GetMapping("/booking")
-    public String showBookingPage() {
-        // Повертаємо сторінку для бронювання
-        return "booking"; // це має бути файл booking.html у папці templates
+    @GetMapping("/book")
+    public String bookProperty() {
+        // Повертаємо сторінку, де можна забронювати нерухомість
+        return "property_details"; // Використовуємо шаблон property_details.html
     }
 }

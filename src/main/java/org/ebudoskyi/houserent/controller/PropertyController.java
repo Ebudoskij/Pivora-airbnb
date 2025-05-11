@@ -1,4 +1,4 @@
-package org.ebudoskyi.houserent.controller;
+package com.example.main.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,10 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PropertyController {
 
-    // Мапінг для сторінки властивостей
     @GetMapping("/properties")
     public String showProperties() {
-        // Повертаємо сторінку для перегляду всіх об'єктів нерухомості
-        return "properties"; // це має бути файл properties.html у папці templates
+        // Повертаємо сторінку зі списком нерухомості
+        return "search"; // Використовуємо шаблон search.html
+    }
+
+    @GetMapping("/property/{id}")
+    public String showPropertyDetails() {
+        // Повертаємо сторінку з детальною інформацією про нерухомість
+        return "property_details"; // Використовуємо шаблон property_details.html
     }
 }
