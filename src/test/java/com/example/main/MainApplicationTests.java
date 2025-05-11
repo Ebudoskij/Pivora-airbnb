@@ -1,13 +1,14 @@
 package com.example.main;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MainApplicationTests {
+public class MainApplicationTests {
 
 	@Test
-	void contextLoads() {
+    public void contextLoads() {
+		// Цей тест перевіряє, чи можна завантажити контекст без помилок
 	}
 
 }
