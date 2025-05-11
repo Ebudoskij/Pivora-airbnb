@@ -63,42 +63,47 @@
         Оренда нерухомості
       </div>
 
-      <!-- Поле для введення міста -->
-      <div class="form-group mb-3">
-        <input type="text" class="search-input" placeholder="Введіть місто" />
-      </div>
+      <!-- Форма для пошуку з відправкою на /search -->
+      <form action="/search" method="post">
+        <!-- Поле для введення міста -->
+        <div class="form-group mb-3">
+          <input type="text" class="search-input" name="city" placeholder="Введіть місто" required />
+        </div>
 
-      <!-- Календар для вибору дати заїзду -->
-      <div class="form-group date-picker-container">
-        <label class="date-label">Дата заїзду</label>
-        <div class="input-group">
-          <input type="text" class="search-input datepicker" id="check-in-date" placeholder="Дата заїзду" readonly>
-          <div class="input-group-append">
-            <span class="input-group-text calendar-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-              </svg>
-            </span>
+        <!-- Календар для вибору дати заїзду -->
+        <div class="form-group date-picker-container">
+          <label class="date-label">Дата заїзду</label>
+          <div class="input-group">
+            <input type="text" class="search-input datepicker" id="check-in-date" name="startDate" placeholder="Дата заїзду" readonly required>
+            <input type="hidden" id="check-in-date-hidden" name="startDate"> <!-- Прихований input для зберігання дати у форматі YYYY-MM-DD -->
+            <div class="input-group-append">
+              <span class="input-group-text calendar-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Календар для вибору дати виїзду -->
-      <div class="form-group date-picker-container">
-        <label class="date-label">Дата виїзду</label>
-        <div class="input-group">
-          <input type="text" class="search-input datepicker" id="check-out-date" placeholder="Дата виїзду" readonly>
-          <div class="input-group-append">
-            <span class="input-group-text calendar-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-              </svg>
-            </span>
+        <!-- Календар для вибору дати виїзду -->
+        <div class="form-group date-picker-container">
+          <label class="date-label">Дата виїзду</label>
+          <div class="input-group">
+            <input type="text" class="search-input datepicker" id="check-out-date" name="endDate" placeholder="Дата виїзду" readonly required>
+            <input type="hidden" id="check-out-date-hidden" name="endDate"> <!-- Прихований input для зберігання дати у форматі YYYY-MM-DD -->
+            <div class="input-group-append">
+              <span class="input-group-text calendar-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <button class="search-button">ПОШУК</button>
+        <button type="submit" class="search-button">ПОШУК</button>
+      </form>
     </div>
   </div>
 </div>
@@ -135,6 +140,10 @@
       if ($('#check-out-date').datepicker('getDate') < minDate) {
         $('#check-out-date').datepicker('setDate', minDate);
       }
+
+      // Оновлюємо прихований input з форматом ISO для сервера (YYYY-MM-DD)
+      var isoDate = selected.date.toISOString().split('T')[0];
+      $('#check-in-date-hidden').val(isoDate);
     });
 
     $('#check-out-date').datepicker({
@@ -142,6 +151,10 @@
       autoclose: true,
       startDate: new Date(),
       language: 'uk-UA'
+    }).on('changeDate', function(selected) {
+      // Оновлюємо прихований input з форматом ISO для сервера (YYYY-MM-DD)
+      var isoDate = selected.date.toISOString().split('T')[0];
+      $('#check-out-date-hidden').val(isoDate);
     });
   });
 </script>
