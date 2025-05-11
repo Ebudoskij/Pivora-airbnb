@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ebudoskyi.houserent.model.BookingEnum;
 
 import java.time.LocalDate;
 
@@ -14,8 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class BookingDTO {
+    private Long bookingId;
+    private Long propertyId;
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalPrice;
-    private BookingEnum status;
 }

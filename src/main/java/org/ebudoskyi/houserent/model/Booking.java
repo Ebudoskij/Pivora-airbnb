@@ -38,9 +38,4 @@ public class Booking {
     @NotNull
     @Column(nullable = false)
     private double totalPrice;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private BookingEnum status;
 }

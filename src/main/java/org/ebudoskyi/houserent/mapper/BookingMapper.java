@@ -11,22 +11,18 @@ public class BookingMapper {
         BookingDTO bookingDTO = new BookingDTO(
                 booking.getId(),
                 booking.getProperty().getId(),
-                booking.getTenant().getId(),
                 booking.getStartDate(),
                 booking.getEndDate(),
-                booking.getTotalPrice(),
-                booking.getStatus()
+                booking.getTotalPrice()
         );
         return bookingDTO;
     }
 
     public Booking toEntity(BookingDTO bookingDTO) {
         Booking booking = new Booking();
-        booking.setId(bookingDTO.getId());
         booking.setStartDate(bookingDTO.getStartDate());
         booking.setEndDate(bookingDTO.getEndDate());
         booking.setTotalPrice(bookingDTO.getTotalPrice());
-        booking.setStatus(bookingDTO.getStatus());
         return booking;
     }
 
