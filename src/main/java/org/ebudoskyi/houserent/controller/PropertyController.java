@@ -101,7 +101,7 @@ public class PropertyController {
 
         List<Property> availableProperties = propertyService.getAvailableProperties(searchDTO);
         model.addAttribute("properties", availableProperties);
-        return "properties/list"; // тут буде сторінка зі списком житла
+        return "search/result"; // тут буде сторінка зі списком житла
     }
 
 }

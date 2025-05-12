@@ -1,6 +1,7 @@
 package org.ebudoskyi.houserent.service;
 
 import org.ebudoskyi.houserent.dto.BookingDTO;
+import org.ebudoskyi.houserent.dto.BookingRequestDTO;
 import org.ebudoskyi.houserent.model.Booking;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.User;
@@ -10,6 +11,8 @@ import org.ebudoskyi.houserent.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -35,38 +38,45 @@ public class BookingService {
     }
 
     // Create a new booking
-    public Booking createBooking(BookingDTO bookingDTO) {
-
-        Property property = propertyRepository.findById(propertyId)
-                .orElseThrow(() -> new IllegalArgumentException("Property not found"));
-
-        User tenant = userRepository.findById(tenantId)
+    public Booking createBooking(Long userId, BookingRequestDTO dto) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Check if the property is available for the given date range
-        if (!isPropertyAvailable(propertyId, startDate, endDate)) {
-            throw new IllegalArgumentException("Property is not available for the selected dates");
+        Property property = propertyRepository.findById(dto.getPropertyId())
+                .orElseThrow(() -> new IllegalArgumentException("Property not found"));
+
+        if (dto.getEndDate().isBefore(dto.getStartDate())) {
+            throw new IllegalArgumentException("End date cannot be before start date");
         }
 
-        // Create the booking
+        List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
+                dto.getPropertyId(), dto.getStartDate(), dto.getEndDate()
+        );
+
+        if (!overlappingBookings.isEmpty()) {
+            throw new IllegalArgumentException("This property is already booked for the selected dates");
+        }
+
+        long nights = ChronoUnit.DAYS.between(dto.getStartDate(), dto.getEndDate());
+        double totalPrice = nights * property.getPricePerNight();
+
         Booking booking = new Booking();
+        booking.setTenant(user);
         booking.setProperty(property);
-        booking.setTenant(tenant);
-        booking.setStartDate(startDate);
-        booking.setEndDate(endDate);
+        booking.setStartDate(dto.getStartDate());
+        booking.setEndDate(dto.getEndDate());
         booking.setTotalPrice(totalPrice);
-        booking.setStatus(BookingEnum.PENDING);  // Booking is initially pending
 
         return bookingRepository.save(booking);
     }
+
 
     // Cancel a booking
     public void cancelBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
 
-        booking.setStatus(BookingEnum.CANCELLED);
-        bookingRepository.save(booking);
+        bookingRepository.delete(booking);
     }
 
     // Get all bookings for a user
