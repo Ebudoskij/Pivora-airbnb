@@ -1,0 +1,77 @@
+:root {
+    --primary-color: #3498db;  /* Синій */
+    --secondary-color: #2c3e50;  /* Темно-синій */
+    --accent-color: #27ae60;  /* Зелений */
+    --light-bg: #ecf0f1;
+    --dark-bg: #2c3e50;  /* Темно-синій */
+    --darker-bg: #1a252f;  /* Ще темніший синій для навігаційної панелі */
+    --border-radius: 8px;
+}
+
+body {
+    background-color: var(--dark-bg);
+}
+
+
+/* Формовий контейнер */
+.review-form-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    color: var(--secondary-color);
+}
+
+/* Заголовок */
+.review-form-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    color: var(--secondary-color);
+}
+
+/* Поля форми */
+.review-form-container .form-group {
+    margin-bottom: 20px;
+}
+
+.review-form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.review-form-container .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Текстова область */
+.review-form-container textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Кнопка */
+.review-form-container .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.review-form-container .btn-submit:hover {
+    background-color: #219653;
+}

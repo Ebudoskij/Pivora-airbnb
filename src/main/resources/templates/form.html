@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Залишити відгук</title>
+    <link rel="stylesheet" href="/css/form.css">
+</head>
+<body>
+
+<div class="main-content">
+    <div class="review-form-container">
+    <h2>Залишити відгук</h2>
+        <form action="/reviews" method="post">
+            <input type="hidden" name="propertyId" value="${property.id}" />
+
+            <div class="form-group">
+                <label for="rating">Оцінка (1–5):</label>
+                <select name="rating" id="rating" class="form-control" required>
+                    <option value="" disabled selected>Оберіть оцінку</option>
+                    <option value="1">1 — Погано</option>
+                    <option value="2">2</option>
+                    <option value="3">3 — Нормально</option>
+                    <option value="4">4</option>
+                    <option value="5">5 — Відмінно</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Ваш відгук:</label>
+                <textarea name="content" id="content" rows="5" class="form-control" required
+                          placeholder="Опишіть свої враження від проживання..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Надіслати</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
