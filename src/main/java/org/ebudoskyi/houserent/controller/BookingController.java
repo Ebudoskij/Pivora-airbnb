@@ -3,6 +3,7 @@ package org.ebudoskyi.houserent.controller;
 import jakarta.servlet.http.HttpSession;
 import org.ebudoskyi.houserent.dto.BookingDTO;
 import org.ebudoskyi.houserent.dto.BookingRequestDTO;
+import org.ebudoskyi.houserent.model.Booking;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.repository.PropertyRepository;
 import org.ebudoskyi.houserent.service.BookingService;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller
+import java.util.List;
+
+@Controller("/bookings")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -63,4 +66,17 @@ public class BookingController {
         }
     }
 
+    @GetMapping("/list")
+    public String showBookings(Model model, HttpSession session) {
+        if (session.getAttribute("authenticated") == null) {
+            return "redirect:/login";
+        }
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+        List<Booking> bookings = bookingService.getBookingsByUser(userId);
+        model.addAttribute("bookings", bookings);
+        return "bookings/list";
+    }
 }

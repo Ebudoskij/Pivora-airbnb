@@ -30,7 +30,7 @@ public class PropertyController {
             return "redirect:/login";
         }
 
-        model.addAttribute("propertyDTO", new PropertyResponseDTO());
+        model.addAttribute("propertyDTO", new PropertyCreationDTO());
         return "properties/create"; // Render property creation page
     }
 
@@ -101,7 +101,7 @@ public class PropertyController {
 
         List<Property> availableProperties = propertyService.getAvailableProperties(searchDTO);
         model.addAttribute("properties", availableProperties);
-        return "search/result"; // тут буде сторінка зі списком житла
+        return "search.html/result"; // тут буде сторінка зі списком житла
     }
 
 }

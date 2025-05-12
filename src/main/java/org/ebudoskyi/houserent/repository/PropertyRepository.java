@@ -13,10 +13,6 @@ import java.util.List;
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findByOwnerId(Long userId);
-    List<Property> findByLocation(String location);
-    List<Property> findByLocationContainingIgnoreCase(String location);
-    List<Property> findByPricePerNightBetween(double min, double max);
-    List<Property> findByRoomsGreaterThanEqual(int roomsIsGreaterThan);
 
     // Пошук житла за містом та перевірка на доступність на вказаний період
     @Query("SELECT p FROM Property p WHERE p.city = :city AND p.id NOT IN " +

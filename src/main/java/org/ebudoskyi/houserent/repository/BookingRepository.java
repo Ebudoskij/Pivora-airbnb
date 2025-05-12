@@ -14,16 +14,6 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    List<Booking> findByPropertyId(Long propertyId);
-
-    List<Booking> findByTenantId(Long tenantId);
-
-    List<Booking> findByPropertyIdAndEndDateGreaterThanEqualAndStartDateLessThanEqual(
-            Long propertyId, LocalDate endDate, LocalDate startDate);
-
-    List<Booking> findByPropertyIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-            Long propertyId, LocalDate date);
-
     @Query("SELECT b FROM Booking b WHERE b.property.id = :propertyId " +
             "AND b.endDate > :startDate AND b.startDate < :endDate")
     List<Booking> findOverlappingBookings(@Param("propertyId") Long propertyId,
