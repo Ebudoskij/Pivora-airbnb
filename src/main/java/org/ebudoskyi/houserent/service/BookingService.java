@@ -94,4 +94,15 @@ public class BookingService {
 
         return bookingRepository.findByProperty(property);
     }
+
+    public void deleteBooking(Long userId, Long bookingId) {
+        Booking booking =  bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+        User  user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!booking.getTenant().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("You can only delete your booking!");
+        }
+        bookingRepository.delete(booking);
+    }
 }

@@ -25,6 +25,9 @@
                     <a class="nav-link" href="/properties/createProperty">Додати нерухомість</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/properties/list">Ваші оголошення</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/bookings/list">Ваші бронювання</a>
                 </li>
             </ul>
@@ -64,18 +67,17 @@
             </div>
 
             <!-- Форма для пошуку з відправкою на /search.html -->
-            <form action="/search" method="post">
+            <form action="/properties/search" method="POST">
                 <!-- Поле для введення міста -->
                 <div class="form-group mb-3">
-                    <input type="text" class="search-input" name="city" placeholder="Введіть місто" required />
+                    <input type="text" class="search-input" id="city" name="city" placeholder="Введіть місто" required />
                 </div>
 
                 <!-- Календар для вибору дати заїзду -->
                 <div class="form-group date-picker-container">
                     <label class="date-label">Дата заїзду</label>
                     <div class="input-group">
-                        <input type="text" class="search-input datepicker" id="check-in-date" name="startDate" placeholder="Дата заїзду" required>
-                        <input type="hidden" id="check-in-date-hidden" name="startDate"> <!-- Прихований input для зберігання дати у форматі YYYY-MM-DD -->
+                        <input type="date" class="search-input datepicker" id="check-in-date" name="startDate" placeholder="Дата заїзду" required>
                         <div class="input-group-append">
               <span class="input-group-text calendar-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
@@ -90,8 +92,7 @@
                 <div class="form-group date-picker-container">
                     <label class="date-label">Дата виїзду</label>
                     <div class="input-group">
-                        <input type="text" class="search-input datepicker" id="check-out-date" name="endDate" placeholder="Дата виїзду" required>
-                        <input type="hidden" id="check-out-date-hidden" name="endDate"> <!-- Прихований input для зберігання дати у форматі YYYY-MM-DD -->
+                        <input type="date" class="search-input datepicker" id="check-out-date" name="endDate" placeholder="Дата виїзду" required>
                         <div class="input-group-append">
               <span class="input-group-text calendar-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">

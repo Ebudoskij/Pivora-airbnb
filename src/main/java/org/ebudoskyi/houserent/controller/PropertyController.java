@@ -2,7 +2,6 @@ package org.ebudoskyi.houserent.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.ebudoskyi.houserent.dto.PropertyCreationDTO;
-import org.ebudoskyi.houserent.dto.PropertyResponseDTO;
 import org.ebudoskyi.houserent.dto.PropertySearchDTO;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.service.PropertyService;
@@ -27,7 +26,7 @@ public class PropertyController {
     @GetMapping("/createProperty")
     public String showPropertyForm(Model model,  HttpSession session) {
         if (session.getAttribute("authenticated") == null) {
-            return "redirect:/login";
+            return "redirect:/users/login";
         }
 
         model.addAttribute("propertyDTO", new PropertyCreationDTO());
@@ -44,7 +43,7 @@ public class PropertyController {
         Long userId = (Long) session.getAttribute("userId");
 
         if (userId == null) {
-            return "redirect:/login";
+            return "redirect:/users/login";
         }
 
         // Property creation logic
@@ -57,21 +56,22 @@ public class PropertyController {
         }
     }
 
-    @GetMapping("/deleteProperty/{propertyId}")
-    public String deleteProperty(@PathVariable Long propertyId, HttpSession session, Model model) {
+    @PostMapping("/delete")
+    public String deleteProperty(@RequestParam Long propertyId, HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId");
+        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
 
-        if (userId == null) {
-            return "redirect:/login";  // Ensure the user is logged in
+        if (userId == null || authenticated == null) {
+            return "redirect:/users/login";  // Ensure the user is logged in
         }
 
         try {
             // Call service to delete the property
             propertyService.deleteProperty(userId, propertyId);
-            return "redirect:/dashboard";  // Redirect to dashboard after deletion
+            return "redirect:/properties/list";  // Redirect to dashboard after deletion
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "properties/dashboard";  // Optionally show an error on the dashboard
+            return "/dashboard";  // Optionally show an error on the dashboard
         }
     }
 
@@ -80,7 +80,7 @@ public class PropertyController {
     public String showSearchForm(Model model, HttpSession session) {
         Boolean authenticated = (Boolean) session.getAttribute("authenticated");
         if (authenticated == null || !authenticated) {
-            return "redirect:/login";
+            return "redirect:/users/login";
         }
 
         model.addAttribute("searchDTO", new PropertySearchDTO());
@@ -96,12 +96,23 @@ public class PropertyController {
     ) {
         Boolean authenticated = (Boolean) session.getAttribute("authenticated");
         if (authenticated == null || !authenticated) {
-            return "redirect:/login";
+            return "redirect:/users/login";
         }
 
         List<Property> availableProperties = propertyService.getAvailableProperties(searchDTO);
         model.addAttribute("properties", availableProperties);
-        return "search.html/result"; // тут буде сторінка зі списком житла
+        return "properties/search"; // тут буде сторінка зі списком житла
     }
 
+    @GetMapping("/list")
+    public String listProperties(Model model, HttpSession session) {
+        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
+        Long userId = (Long) session.getAttribute("userId");
+        if (authenticated == null || userId == null) {
+            return "redirect:/users/login";
+        }
+        List<Property> properties = propertyService.getPropertiesByUserId(userId);
+        model.addAttribute("properties", properties);
+        return "properties/list";
+    }
 }
