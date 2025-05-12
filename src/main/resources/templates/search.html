@@ -9,6 +9,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/search.css">
+    <style>
+        .property-rating-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-book-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .property-book-button:hover {
+            background-color: #218838;
+            color: white;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 0;
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+
+        .no-results h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #495057;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light">
@@ -57,7 +91,7 @@
 
 <div class="container">
     <div class="results-info">
-        <div class="result-count">Знайдено <span id="result-number">15</span> варіантів</div>
+        <div class="result-count">Знайдено <span id="result-number">0</span> варіантів</div>
         <div class="sort-options">
             <label for="sort-select">Сортувати за:</label>
             <select id="sort-select" class="form-control sort-select">
@@ -69,160 +103,12 @@
         </div>
     </div>
 
-    <div class="row property-results">
-        <!-- Картка нерухомості 1 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="property-card">
-                <div class="property-img" style="background-image: url('/api/placeholder/400/320')">
-                    <div class="property-tag">Топ пропозиція</div>
-                </div>
-                <div class="property-info">
-                    <h3>Затишна квартира в центрі</h3>
-                    <div class="property-address">вул. Шевченка, 15, Київ</div>
-                    <div class="property-rating">
-                        <div class="stars">
-                            ★★★★<span class="star-empty">★</span>
-                        </div>
-                        <div class="rating-count">46 відгуків</div>
-                    </div>
-                    <div class="property-features">
-                        <span class="feature"><i class="feature-icon bed-icon"></i> 2 спальні</span>
-                        <span class="feature"><i class="feature-icon bath-icon"></i> 1 ванна</span>
-                        <span class="feature"><i class="feature-icon size-icon"></i> 65 м²</span>
-                    </div>
-                    <div class="property-price">2,500₴ <span class="price-period">/ ніч</span></div>
-                    <a href="/property/1" class="btn property-view-button">Детальніше</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Картка нерухомості 2 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="property-card">
-                <div class="property-img" style="background-image: url('/api/placeholder/400/320')"></div>
-                <div class="property-info">
-                    <h3>Апартаменти з видом на парк</h3>
-                    <div class="property-address">вул. Паркова, 42, Київ</div>
-                    <div class="property-rating">
-                        <div class="stars">
-                            ★★★★★
-                        </div>
-                        <div class="rating-count">23 відгуки</div>
-                    </div>
-                    <div class="property-features">
-                        <span class="feature"><i class="feature-icon bed-icon"></i> 3 спальні</span>
-                        <span class="feature"><i class="feature-icon bath-icon"></i> 2 ванни</span>
-                        <span class="feature"><i class="feature-icon size-icon"></i> 85 м²</span>
-                    </div>
-                    <div class="property-price">3,200₴ <span class="price-period">/ ніч</span></div>
-                    <a href="/property/2" class="btn property-view-button">Детальніше</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Картка нерухомості 3 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="property-card">
-                <div class="property-img" style="background-image: url('/api/placeholder/400/320')">
-                    <div class="property-tag discount-tag">-15%</div>
-                </div>
-                <div class="property-info">
-                    <h3>Студія біля метро</h3>
-                    <div class="property-address">просп. Свободи, 22, Київ</div>
-                    <div class="property-rating">
-                        <div class="stars">
-                            ★★★<span class="star-empty">★★</span>
-                        </div>
-                        <div class="rating-count">18 відгуків</div>
-                    </div>
-                    <div class="property-features">
-                        <span class="feature"><i class="feature-icon bed-icon"></i> 1 спальня</span>
-                        <span class="feature"><i class="feature-icon bath-icon"></i> 1 ванна</span>
-                        <span class="feature"><i class="feature-icon size-icon"></i> 40 м²</span>
-                    </div>
-                    <div class="property-price">1,700₴ <span class="price-period">/ ніч</span></div>
-                    <a href="/property/3" class="btn property-view-button">Детальніше</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Картка нерухомості 4 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="property-card">
-                <div class="property-img" style="background-image: url('/api/placeholder/400/320')"></div>
-                <div class="property-info">
-                    <h3>Пентхаус з терасою</h3>
-                    <div class="property-address">вул. Хрещатик, 10, Київ</div>
-                    <div class="property-rating">
-                        <div class="stars">
-                            ★★★★★
-                        </div>
-                        <div class="rating-count">35 відгуків</div>
-                    </div>
-                    <div class="property-features">
-                        <span class="feature"><i class="feature-icon bed-icon"></i> 4 спальні</span>
-                        <span class="feature"><i class="feature-icon bath-icon"></i> 2 ванни</span>
-                        <span class="feature"><i class="feature-icon size-icon"></i> 120 м²</span>
-                    </div>
-                    <div class="property-price">5,800₴ <span class="price-period">/ ніч</span></div>
-                    <a href="/property/4" class="btn property-view-button">Детальніше</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Картка нерухомості 5 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="property-card">
-                <div class="property-img" style="background-image: url('/api/placeholder/400/320')"></div>
-                <div class="property-info">
-                    <h3>Квартира з виглядом на річку</h3>
-                    <div class="property-address">Набережна, 5, Київ</div>
-                    <div class="property-rating">
-                        <div class="stars">
-                            ★★★★<span class="star-empty">★</span>
-                        </div>
-                        <div class="rating-count">29 відгуків</div>
-                    </div>
-                    <div class="property-features">
-                        <span class="feature"><i class="feature-icon bed-icon"></i> 2 спальні</span>
-                        <span class="feature"><i class="feature-icon bath-icon"></i> 1 ванна</span>
-                        <span class="feature"><i class="feature-icon size-icon"></i> 75 м²</span>
-                    </div>
-                    <div class="property-price">2,900₴ <span class="price-period">/ ніч</span></div>
-                    <a href="/property/5" class="btn property-view-button">Детальніше</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Картка нерухомості 6 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="property-card">
-                <div class="property-img" style="background-image: url('/api/placeholder/400/320')">
-                    <div class="property-tag">Новинка</div>
-                </div>
-                <div class="property-info">
-                    <h3>Сучасні апартаменти</h3>
-                    <div class="property-address">вул. Володимирська, 18, Київ</div>
-                    <div class="property-rating">
-                        <div class="stars">
-                            ★★★★<span class="star-empty">★</span>
-                        </div>
-                        <div class="rating-count">12 відгуків</div>
-                    </div>
-                    <div class="property-features">
-                        <span class="feature"><i class="feature-icon bed-icon"></i> 2 спальні</span>
-                        <span class="feature"><i class="feature-icon bath-icon"></i> 1 ванна</span>
-                        <span class="feature"><i class="feature-icon size-icon"></i> 60 м²</span>
-                    </div>
-                    <div class="property-price">2,350₴ <span class="price-period">/ ніч</span></div>
-                    <a href="/property/6" class="btn property-view-button">Детальніше</a>
-                </div>
-            </div>
-        </div>
+    <div class="row property-results" id="properties-container">
+        <!-- Картки будуть генеруватися динамічно або показуватися повідомлення "не знайдено" -->
     </div>
 
     <!-- Пагінація -->
-    <div class="pagination-container">
+    <div class="pagination-container" style="display: none;">
         <ul class="pagination">
             <li class="page-item disabled">
                 <a class="page-link" href="#" aria-label="Previous">
@@ -332,11 +218,6 @@
     </div>
 </div>
 
-<!-- Кнопка для додавання нерухомості (видима тільки авторизованим користувачам) -->
-<div class="add-property-btn" data-toggle="tooltip" title="Додати нову нерухомість" id="add-property-btn">
-    <i class="plus-icon">+</i>
-</div>
-
 <!-- Індикатор завантаження -->
 <div class="loading-container">
     <div class="loading-spinner"></div>
@@ -352,25 +233,7 @@
 
 <script>
     $(document).ready(function() {
-        // Ініціалізуємо tooltip для кнопки додавання нерухомості
-        $('[data-toggle="tooltip"]').tooltip();
-
-        // Перевіряємо авторизацію користувача для показу/приховування кнопки додавання
-        function checkAuthorizationStatus() {
-            // В реальному додатку тут має бути перевірка авторизації
-            // Якщо користувач не авторизований, приховуємо кнопку
-            const isLoggedIn = false; // Змініть на true для тестування
-            if (!isLoggedIn) {
-                $('#add-property-btn').hide();
-            }
-        }
-
-        // Обробник кліку на кнопку додавання нерухомості
-        $('#add-property-btn').click(function() {
-            window.location.href = '/add-property';
-        });
-
-        // Показуємо індикатор завантаження під час запиту
+        // Функція для показу індикатора завантаження
         function showLoading() {
             $('.loading-container').css('display', 'flex');
         }
@@ -379,14 +242,131 @@
             $('.loading-container').hide();
         }
 
-        // Перевіряємо статус авторизації при завантаженні сторінки
-        checkAuthorizationStatus();
+        // Функція для генерації зірок рейтингу
+        function generateStars(rating) {
+            let starsHtml = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+
+            for (let i = 1; i <= 5; i++) {
+                if (i <= fullStars) {
+                    starsHtml += '★';
+                } else {
+                    starsHtml += '<span class="star-empty">★</span>';
+                }
+            }
+            return starsHtml;
+        }
+
+        // Функція для відображення карток нерухомості
+        function renderProperties(properties) {
+            const container = $('#properties-container');
+            container.empty();
+
+            // Якщо немає нерухомості, показуємо повідомлення
+            if (!properties || properties.length === 0) {
+                const noResultsHtml = `
+                    <div class="col-12">
+                        <div class="no-results">
+                            <h3>Не знайдено</h3>
+                            <p>На жаль, за вашим запитом не знайдено жодної нерухомості.</p>
+                            <p>Спробуйте змінити параметри пошуку або фільтри.</p>
+                        </div>
+                    </div>
+                `;
+                container.html(noResultsHtml);
+                $('.pagination-container').hide();
+                $('#result-number').text('0');
+                return;
+            }
+
+            // Відображаємо картки нерухомості
+            properties.forEach(property => {
+                const stars = generateStars(property.rating);
+                const tagHtml = property.tag ?
+                    `<div class="property-tag ${property.tagClass || ''}">${property.tag}</div>` : '';
+
+                const propertyCard = `
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="property-card">
+                            <div class="property-img" style="background-image: url('${property.image}')">
+                                ${tagHtml}
+                            </div>
+                            <div class="property-info">
+                                <h3>${property.name}</h3>
+                                <p>${property.description}</p>
+                                <div class="property-address">${property.address}</div>
+                                <div class="property-rating-display">Рейтинг: ${property.rating}/5</div>
+                                <div class="property-rating">
+                                    <div class="stars">${stars}</div>
+                                    <div class="rating-count">${property.reviewCount} відгуків</div>
+                                </div>
+                                <div class="property-features">
+                                    <span class="feature"><i class="feature-icon bed-icon"></i> ${property.bedrooms} спальні</span>
+                                    <span class="feature"><i class="feature-icon bath-icon"></i> ${property.bathrooms} ванна</span>
+                                    <span class="feature"><i class="feature-icon size-icon"></i> ${property.size} м²</span>
+                                </div>
+                                <div class="property-price">${property.price}₴ <span class="price-period">/ ніч</span></div>
+
+                                <!-- Форма для переходу на сторінку детальної інформації -->
+                                <a href="/property/${property.id}" class="btn property-view-button">Детальніше</a>
+
+                                <!-- Форма для бронювання -->
+                                <form action="/bookings/new" method="get" class="d-inline">
+                                    <input type="hidden" name="propertyId" value="${property.id}" />
+                                    <button type="submit" class="btn property-book-button">Забронювати</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.append(propertyCard);
+            });
+
+            $('#result-number').text(properties.length);
+            $('.pagination-container').show();
+        }
+
+        // Функція для завантаження нерухомості з сервера
+        function loadProperties() {
+            showLoading();
+
+            // В реальному додатку тут буде AJAX запит до сервера
+            // Наприклад:
+            /*
+            $.ajax({
+                url: '/api/properties',
+                method: 'GET',
+                data: {
+                    city: city,
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                success: function(response) {
+                    renderProperties(response);
+                    hideLoading();
+                },
+                error: function(error) {
+                    console.error('Помилка завантаження даних:', error);
+                    renderProperties([]); // Показуємо повідомлення "Не знайдено"
+                    hideLoading();
+                }
+            });
+            */
+
+            // Для демонстрації симулюємо відсутність даних
+            setTimeout(function() {
+                renderProperties([]); // Передаємо пустий масив
+                hideLoading();
+            }, 500);
+        }
 
         // Отримуємо параметри з URL
         const urlParams = new URLSearchParams(window.location.search);
         const city = urlParams.get('city') || 'Київ';
-        const startDate = urlParams.get('startDate') || '2025-05-12';
-        const endDate = urlParams.get('endDate') || '2025-05-16';
+        const startDate = urlParams.get('startDate') || new Date().toISOString().split('T')[0];
+        const endDate = urlParams.get('endDate') || new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
         // Форматуємо дати для відображення
         const formatDate = (dateStr) => {
@@ -398,165 +378,38 @@
         $('#city-display').text(`Місто: ${city}`);
         $('#date-range-display').text(`Період: ${formatDate(startDate)} - ${formatDate(endDate)}`);
 
-        // Функція для завантаження даних про нерухомість з сервера
-        function loadProperties() {
-            showLoading();
-
-            // Тут має бути реальний AJAX запит до вашого сервера
-            // Приклад:
-            /*
-            $.ajax({
-              url: '/api/properties',
-              method: 'GET',
-              data: {
-                city: city,
-                startDate: startDate,
-                endDate: endDate,
-                // додайте інші параметри фільтрів якщо потрібно
-              },
-              success: function(response) {
-                renderProperties(response);
-                $('#result-number').text(response.length);
-                hideLoading();
-              },
-              error: function(error) {
-                console.error('Помилка завантаження даних:', error);
-                alert('Не вдалося завантажити дані про нерухомість');
-                hideLoading();
-              }
-            });
-            */
-
-            // Симуляція запиту для демонстрації
-            setTimeout(function() {
-                hideLoading();
-            }, 500);
-        }
-
-        // Функція для відображення карток нерухомості
-        function renderProperties(properties) {
-            // Очищаємо контейнер для карток
-            const container = $('.property-results');
-            container.empty();
-
-            // Додаємо нові картки на основі отриманих даних
-            /* Приклад:
-            properties.forEach(property => {
-              const card = createPropertyCard(property);
-              container.append(card);
-            });
-            */
-        }
-
-        // Функція для створення HTML-картки нерухомості
-        function createPropertyCard(property) {
-            // Приклад створення елементу картки з отриманих даних
-            /* Приклад:
-            const stars = generateStars(property.rating);
-
-            const html = `
-              <div class="col-md-6 col-lg-4 mb-4">
-                <div class="property-card">
-                  <div class="property-img" style="background-image: url('${property.imageUrl || '/api/placeholder/400/320'}')">
-                    ${property.tag ? `<div class="property-tag">${property.tag}</div>` : ''}
-                  </div>
-                  <div class="property-info">
-                    <h3>${property.title}</h3>
-                    <div class="property-address">${property.address}</div>
-                    <div class="property-rating">
-                      <div class="stars">${stars}</div>
-                      <div class="rating-count">${property.reviewCount} відгуків</div>
-                    </div>
-                    <div class="property-features">
-                      <span class="feature"><i class="feature-icon bed-icon"></i> ${property.bedrooms} спальні</span>
-                      <span class="feature"><i class="feature-icon bath-icon"></i> ${property.bathrooms} ванна</span>
-                      <span class="feature"><i class="feature-icon size-icon"></i> ${property.size} м²</span>
-                    </div>
-                    <div class="property-price">${property.price}₴ <span class="price-period">/ ніч</span></div>
-                    <a href="/property/${property.id}" class="btn property-view-button">Детальніше</a>
-                  </div>
-                </div>
-              </div>
-            `;
-
-            return $(html);
-            */
-        }
-
-        // Функція для генерації HTML зірок рейтингу
-        function generateStars(rating) {
-            let starsHtml = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= rating) {
-                    starsHtml += '★';
-                } else {
-                    starsHtml += '<span class="star-empty">★</span>';
-                }
-            }
-            return starsHtml;
-        }
-
-        // Обробник для кнопки застосування фільтрів
+        // Обробник для застосування фільтрів
         $('.apply-filters').click(function() {
             $('#filterModal').modal('hide');
 
-            // Отримання значень фільтрів
-            const minPrice = $('#min-price').val();
-            const maxPrice = $('#max-price').val();
-            const bedrooms = $('#bedrooms').val();
-            const bathrooms = $('#bathrooms').val();
-            const propertyType = $('#property-type').val();
+            // Збираємо параметри фільтрів
+            const filters = {
+                minPrice: $('#min-price').val(),
+                maxPrice: $('#max-price').val(),
+                bedrooms: $('#bedrooms').val(),
+                bathrooms: $('#bathrooms').val(),
+                propertyType: $('#property-type').val(),
+                amenities: []
+            };
 
-            // Перевіряємо які зручності були вибрані
-            const amenities = [];
-            if ($('#wifi').is(':checked')) amenities.push('wifi');
-            if ($('#parking').is(':checked')) amenities.push('parking');
-            if ($('#kitchen').is(':checked')) amenities.push('kitchen');
-            if ($('#ac').is(':checked')) amenities.push('ac');
-            if ($('#pool').is(':checked')) amenities.push('pool');
+            // Збираємо вибрані зручності
+            if ($('#wifi').is(':checked')) filters.amenities.push('wifi');
+            if ($('#parking').is(':checked')) filters.amenities.push('parking');
+            if ($('#kitchen').is(':checked')) filters.amenities.push('kitchen');
+            if ($('#ac').is(':checked')) filters.amenities.push('ac');
+            if ($('#pool').is(':checked')) filters.amenities.push('pool');
 
-            // Тут можна додати запит з відфільтрованими даними
-            // Симуляція для демонстрації
-            $('#result-number').text('9');
-
-            // В реальному додатку тут має бути запит на сервер з фільтрацією
-            // loadFilteredProperties(minPrice, maxPrice, bedrooms, bathrooms, amenities, propertyType);
+            // Перезавантажуємо дані з фільтрами
+            loadProperties();
         });
 
-        // Обробник для зміни сортування
+        // Обробник для сортування
         $('#sort-select').change(function() {
-            const value = $(this).val();
-            showLoading();
-
-            // Симуляція запиту для демонстрації
-            setTimeout(function() {
-                // Тут має бути реальний запит на сервер з параметром сортування
-                // В цій демонстрації просто сортуємо існуючі картки
-                const cards = $('.property-card').parent();
-
-                // Приклад сортування за ціною
-                cards.sort(function(a, b) {
-                    const priceA = parseInt($(a).find('.property-price').text());
-                    const priceB = parseInt($(b).find('.property-price').text());
-
-                    if (value === 'price-asc') {
-                        return priceA - priceB;
-                    } else if (value === 'price-desc') {
-                        return priceB - priceA;
-                    }
-
-                    return 0;
-                });
-
-                // Перезавантажуємо картки в новому порядку
-                const container = $('.property-results');
-                cards.detach().appendTo(container);
-
-                hideLoading();
-            }, 300);
+            const sortBy = $(this).val();
+            loadProperties(); // Перезавантажуємо дані з новим сортуванням
         });
 
-        // Викликаємо початкове завантаження нерухомості
+        // Завантажуємо нерухомість при завантаженні сторінки
         loadProperties();
     });
 </script>
