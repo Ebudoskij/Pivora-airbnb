@@ -1,4 +1,39 @@
 /* Стилі для сторінки логіну */
+:root {
+    --primary-color: #3498db;  /* Синій */
+    --secondary-color: #2c3e50;  /* Темно-синій */
+    --accent-color: #27ae60;  /* Зелений */
+    --light-bg: #ecf0f1;
+    --dark-bg: #2c3e50;  /* Темно-синій */
+    --darker-bg: #1a252f;  /* Ще темніший синій для навігаційної панелі */
+    --border-radius: 8px;
+}
+
+/* Стиль для навігаційної панелі */
+.navbar {
+    background-color: var(--darker-bg) !important;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: #ffffff !important;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff !important;
+    margin: 0 10px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--accent-color) !important;
+}
 
 /* Основний контейнер логіну */
 .login-container {
@@ -7,7 +42,7 @@
     display: flex;
     align-items: center;
     background-color: var(--dark-bg);
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 /* Логотип у навігаційній панелі */
@@ -17,7 +52,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: var(--primary-color);
+    background-color: var(--accent-color);  /* Зелений колір */
     color: white;
     font-weight: bold;
     font-size: 1.2rem;
@@ -40,7 +75,7 @@
 
 .pivo-brand h1 span {
     color: var(--primary-color);
-    background-color: rgba(52, 152, 219, 0.1);
+    background-color: rgba(52, 152, 219, 0.15);
     padding: 5px 10px;
     border-radius: 6px;
 }
@@ -69,7 +104,7 @@
     justify-content: center;
     width: 50px;
     height: 50px;
-    background-color: rgba(52, 152, 219, 0.1);
+    background-color: rgba(52, 152, 219, 0.15);
     border-radius: 50%;
     margin-right: 15px;
     color: var(--primary-color);
@@ -114,7 +149,7 @@
 
 .login-form-container {
     background-color: white;
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     padding: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     color: var(--secondary-color);
@@ -146,5 +181,5 @@
     font-weight: 500;
     display: block;
     margin-bottom: 8px;
-    color: var(--secondary);
+    color: var(--secondary-color);
 }
