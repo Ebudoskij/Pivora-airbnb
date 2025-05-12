@@ -26,10 +26,7 @@ public class ReviewController {
         this.reviewService = reviewService;
         this.propertyService = propertyService;
     }
-
-    // ------------------------
     // 1. Форма створення відгуку
-    // ------------------------
     @GetMapping("/new")
     public String showReviewForm(@RequestParam("propertyId") Long propertyId,
                                  Model model,
@@ -44,10 +41,7 @@ public class ReviewController {
         model.addAttribute("reviewDTO", new ReviewDTO());
         return "reviews/form";
     }
-
-    // ------------------------
     // 2. Обробка створення відгуку
-    // ------------------------
     @PostMapping
     public String submitReview(@ModelAttribute("reviewDTO") ReviewDTO reviewDTO,
                                HttpSession session) {
@@ -64,19 +58,14 @@ public class ReviewController {
         return "redirect:/property?id=" + reviewDTO.getPropertyId();
     }
 
-    // ------------------------
     // 3. Перегляд усіх відгуків до помешкання
-    // ------------------------
     @GetMapping
     public String viewPropertyReviews(@RequestParam("propertyId") Long propertyId, Model model) {
         List<Review> reviews = reviewService.getReviewsByPropertyId(propertyId);
         model.addAttribute("reviews", reviews);
         return "reviews/list";
     }
-
-    // ------------------------
-    // 4. Видалення відгуку (доступне лише адміну)
-    // ------------------------
+    //  4. Видалення відгуку (доступне лише адміну)
     @PostMapping("/delete")
     public String deleteReview(@RequestParam("reviewId") Long reviewId, HttpSession session) {
         Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
