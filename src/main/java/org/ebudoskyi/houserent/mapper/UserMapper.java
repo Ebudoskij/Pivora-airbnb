@@ -1,5 +1,6 @@
 package org.ebudoskyi.houserent.mapper;
 
+import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.dto.UserResponseDTO;
 import org.ebudoskyi.houserent.model.*;
@@ -66,6 +67,16 @@ public class UserMapper {
         }
         User user = new User();
         user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        return user;
+    }
+
+    public User toEntity(UserLoginDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+        User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         return user;

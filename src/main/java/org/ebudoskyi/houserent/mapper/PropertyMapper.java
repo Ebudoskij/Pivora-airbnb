@@ -66,6 +66,7 @@ public class PropertyMapper {
         property.setDescription(propertyCreationDTO.getDescription());
         property.setCity(propertyCreationDTO.getCity());
         property.setLocation(propertyCreationDTO.getLocation());
+        property.setRooms(propertyCreationDTO.getRooms());
         property.setPricePerNight(propertyCreationDTO.getPricePerNight());
         return property;
     }

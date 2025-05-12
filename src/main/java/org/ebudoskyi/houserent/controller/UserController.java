@@ -2,6 +2,7 @@ package org.ebudoskyi.houserent.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.dto.UserResponseDTO;
 import org.ebudoskyi.houserent.mapper.UserMapper;
@@ -44,7 +45,7 @@ public class UserController {
         try {
             User user = userService.registerUser(userDTO);
             session.setAttribute("authenticated", true);
-            session.setAttribute("userEmail", user.getId()); // optional
+            session.setAttribute("userId", user.getId()); // optional
             return "redirect:/dashboard";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -58,13 +59,13 @@ public class UserController {
         if (session.getAttribute("authenticated") != null) {
             return "redirect:/dashboard";
         }
-        model.addAttribute("userDTO", new UserRegisterDTO());
+        model.addAttribute("userDTO", new UserLoginDTO());
         return "users/login";
     }
     // Login submission (simplified)
     @PostMapping("/login")
     public String loginUser(
-            @ModelAttribute("userDTO") UserRegisterDTO userDTO,
+            @ModelAttribute("userDTO") UserLoginDTO userDTO,
             Model model,
             HttpSession session
     ) {
@@ -89,7 +90,7 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // Invalidate the session to log the user out
-        return "redirect:/login"; // Redirect to the login page
+        return "redirect:/users/register"; // Redirect to the login page
     }
 
 }

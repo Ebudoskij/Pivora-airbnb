@@ -1,5 +1,6 @@
 package org.ebudoskyi.houserent.service;
 
+import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.mapper.UserMapper;
 import org.ebudoskyi.houserent.model.Message;
@@ -59,7 +60,7 @@ public class UserService {
         return userRepository.save(user); // без шифрування
     }
 
-    public User login(UserRegisterDTO userDTO) {
+    public User login(UserLoginDTO userDTO) {
         return userRepository.findByEmail(userDTO.getEmail())
                 .filter(user -> user.getPassword().equals(userDTO.getPassword()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
