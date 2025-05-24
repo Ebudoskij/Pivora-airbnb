@@ -1,8 +1,10 @@
 package org.ebudoskyi.houserent.service;
 
 import org.ebudoskyi.houserent.dto.PropertyCreationDTO;
+import org.ebudoskyi.houserent.dto.PropertyResponseDTO;
 import org.ebudoskyi.houserent.dto.PropertySearchDTO;
 import org.ebudoskyi.houserent.mapper.PropertyMapper;
+import org.ebudoskyi.houserent.model.Booking;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.User;
 import org.ebudoskyi.houserent.repository.PropertyRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -42,8 +45,8 @@ public class PropertyService {
 
     public List<Property> getAvailableProperties(PropertySearchDTO propertySearch) {
         String city = propertySearch.getCity();
-        LocalDate startDate = LocalDate.parse(propertySearch.getStartDate());
-        LocalDate endDate = LocalDate.parse(propertySearch.getEndDate());
+        LocalDate startDate = propertySearch.getStartDate();
+        LocalDate endDate = propertySearch.getEndDate();
 
         return propertyRepository.findAvailablePropertiesByCityAndDates(city, startDate, endDate);
     }
@@ -53,11 +56,13 @@ public class PropertyService {
                 .orElseThrow(() -> new IllegalArgumentException("Property not found"));
     }
 
-    public Property updateProperty(Long id, Property propertyDetails) {
-        Property property = propertyRepository.findById(id)
+    public Property updateProperty(Long userId, PropertyResponseDTO propertyDetails) {
+        Property property = propertyRepository.findById(propertyDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Property not found"));
+        if (!property.getOwner().getId().equals(userId)) {
+            throw new IllegalArgumentException("User does not own this property");
+        }
 
-        // Update the property details
         property.setTitle(propertyDetails.getTitle());
         property.setDescription(propertyDetails.getDescription());
         property.setLocation(propertyDetails.getLocation());

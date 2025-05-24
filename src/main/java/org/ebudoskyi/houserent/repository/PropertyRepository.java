@@ -16,8 +16,9 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     // Пошук житла за містом та перевірка на доступність на вказаний період
     @Query("SELECT p FROM Property p WHERE p.city = :city AND p.id NOT IN " +
-            "(SELECT b.property.id FROM Booking b WHERE (b.startDate BETWEEN :startDate AND :endDate) " +
-            "OR (b.endDate BETWEEN :startDate AND :endDate))")
+            "(SELECT b.property.id FROM Booking b WHERE NOT (b.endDate < :startDate OR b.startDate > :endDate))")
+
+
     List<Property> findAvailablePropertiesByCityAndDates(@Param("city") String city,
                                                          @Param("startDate") LocalDate startDate,
                                                          @Param("endDate") LocalDate endDate);

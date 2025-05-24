@@ -70,6 +70,12 @@
                  Видалити
             </button>
         </form>
+        <form th:action="@{/properties/edit}" method="get">
+            <input type="hidden" name="propertyId" th:value="${property.id}" />
+            <button type="submit">
+                Редагувати
+            </button>
+        </form>
     </div>
 </div>
 

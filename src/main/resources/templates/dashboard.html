@@ -66,94 +66,28 @@
                 Оренда нерухомості
             </div>
 
-            <!-- Форма для пошуку з відправкою на /search.html -->
-            <form action="/properties/search" method="POST">
-                <!-- Поле для введення міста -->
-                <div class="form-group mb-3">
-                    <input type="text" class="search-input" id="city" name="city" placeholder="Введіть місто" required />
-                </div>
+            <form th:action="@{/properties/search}" th:object="${searchDTO}" method="POST">
 
-                <!-- Календар для вибору дати заїзду -->
-                <div class="form-group date-picker-container">
-                    <label class="date-label">Дата заїзду</label>
-                    <div class="input-group">
-                        <input type="date" class="search-input datepicker" id="check-in-date" name="startDate" placeholder="Дата заїзду" required>
-                        <div class="input-group-append">
-              <span class="input-group-text calendar-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                </svg>
-              </span>
-                        </div>
-                    </div>
-                </div>
+                <label for="city" class="city-label">Місто</label>
+                <input type="text" id ="city" th:field="*{city}" class="search-input" placeholder="Введіть місто" />
+                <p class = "errors" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> error </p>
 
-                <!-- Календар для вибору дати виїзду -->
-                <div class="form-group date-picker-container">
-                    <label class="date-label">Дата виїзду</label>
-                    <div class="input-group">
-                        <input type="date" class="search-input datepicker" id="check-out-date" name="endDate" placeholder="Дата виїзду" required>
-                        <div class="input-group-append">
-              <span class="input-group-text calendar-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                </svg>
-              </span>
-                        </div>
-                    </div>
-                </div>
+                <label for="check-in-date" class="date-label">Дата заїзду</label>
+                <input type="date" id="check-in-date" th:field="*{startDate}" class="search-input datepicker" />
+                <p class = "errors" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"> error </p>
 
-                <button type="submit" class="search-button">ПОШУК</button>
+                <label for="check-out-date" class="date-label">Дата виїзду</label>
+                <input type="date" id="check-out-date" th:field="*{endDate}" class="search-input datepicker" />
+                <p class = "errors" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"> error </p>
+
+                <button type="submit">ПОШУК</button>
             </form>
+
         </div>
     </div>
 </div>
 <footer class="bg-light text-center py-3">
     <p>&copy; 2025 Accomodation Search. Усі права захищені.</p>
 </footer>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/i18n/datepicker.uk-UA.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        // Ініціалізація календарів
-        $('#check-in-date').datepicker({
-            format: 'dd.mm.yyyy',
-            autoclose: true,
-            startDate: new Date(),
-            language: 'uk-UA'
-        }).on('changeDate', function(selected) {
-            // Встановлюємо мінімальну дату для виїзду
-            var minDate = new Date(selected.date);
-            minDate.setDate(minDate.getDate() + 1);
-            $('#check-out-date').datepicker('setStartDate', minDate);
-
-            // Якщо дата виїзду менша за дату заїзду, встановлюємо її на день після заїзду
-            if ($('#check-out-date').datepicker('getDate') < minDate) {
-                $('#check-out-date').datepicker('setDate', minDate);
-            }
-
-            // Оновлюємо прихований input з форматом ISO для сервера (YYYY-MM-DD)
-            var isoDate = selected.date.toISOString().split('T')[0];
-            $('#check-in-date-hidden').val(isoDate);
-        });
-
-        $('#check-out-date').datepicker({
-            format: 'dd.mm.yyyy',
-            autoclose: true,
-            startDate: new Date(),
-            language: 'uk-UA'
-        }).on('changeDate', function(selected) {
-            // Оновлюємо прихований input з форматом ISO для сервера (YYYY-MM-DD)
-            var isoDate = selected.date.toISOString().split('T')[0];
-            $('#check-out-date-hidden').val(isoDate);
-        });
-    });
-</script>
-
 </body>
 </html>

@@ -61,7 +61,9 @@ body {
 .home-container {
     background-color: var(--dark-bg);
     color: white;
-    padding: 80px 0;
+    padding-bottom: 100px;
+    padding-top: 20px;
+    align-content: center;
     position: relative;
     overflow: hidden;
 }
@@ -169,7 +171,6 @@ body {
     border-radius: var(--border-radius);
     padding: 30px;
     width: 400px; /* Встановлюємо фіксовану ширину */
-    flex-shrink: 0; /* Не дозволяємо стискатися */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -194,9 +195,10 @@ body {
 
 /* Стилі для календарів */
 .date-picker-container {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
+.city-label,
 .date-label {
     font-weight: 500;
     margin-bottom: 5px;
@@ -218,34 +220,10 @@ body {
     pointer-events: none;
 }
 
-.calendar-icon {
-    background: transparent;
-    border: none;
-    color: #777;
-}
-
-/* Стилі для підключеного календаря datepicker */
-.datepicker {
-    cursor: pointer;
-    background-color: #fff;
-}
-
-.datepicker-dropdown {
-    border-radius: var(--border-radius);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e1e1e1;
-}
-
-.datepicker table tr td.active.active,
-.datepicker table tr td.active.highlighted.active,
-.datepicker table tr td.active.highlighted:active,
-.datepicker table tr td.active:active {
-    background-color: var(--primary-color) !important;
-    border-color: var(--primary-color) !important;
-}
-
-.datepicker table tr td.day:hover {
-    background-color: var(--light-bg);
+.errors {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: red;
 }
 
 .search-button {
@@ -398,8 +376,7 @@ body {
 /* Footer Styles - прибрано білу полоску, змінено фон */
 footer {
     background-color: var(--dark-bg);
-    padding: 40px 0 20px;
-    margin-top: auto;
+    height: 50px;
     color: white;
 }
 

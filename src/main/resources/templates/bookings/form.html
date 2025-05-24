@@ -63,7 +63,8 @@
 </nav>
 
 <div class="booking-form-container">
-    <h2 th:text="'Бронювання житла: ' + ${propertyName}">Бронювання житла</h2>
+    <h2 th:text="'Бронювання житла: '">Бронювання житла</h2>
+    <h3 th:text="${propertyName}" align="center"> Назва пропозиції</h3>
 
     <form th:action="@{/bookings/create}" method="POST" th:object="${bookingDTO}">
         <input type="hidden" th:field="*{propertyId}"/>
