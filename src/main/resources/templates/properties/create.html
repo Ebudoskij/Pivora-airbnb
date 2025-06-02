@@ -55,14 +55,14 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-        <a class="navbar-brand" href="/dashboard">Accomodation Search</a>
+        <a class="navbar-brand" href="/">Accomodation Search</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/dashboard">Головна</a>
+                    <a class="nav-link" href="/">Головна</a>
                 </li>
             </ul>
         </div>
@@ -72,25 +72,30 @@
     <div class="form-header">
         <h2>Створіть вашу пропозицію</h2>
     </div>
-    <form th:action="@{/properties/createProperty}" method="POST" class="create-form" th:object="${propertyDTO}">
+    <form th:action="@{/properties/createProperty}" method="POST" class="create-form" th:object="${propertyCreationDTO}">
         <label for="title">Назва</label>
         <input type="text" th:field="*{title}" id="title" placeholder="Введіть заголовок оголошення" required>
+        <p class = "errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"> error </p>
 
         <label for="description">Опис</label>
         <input type="text" th:field="*{description}" id="description" placeholder="Введіть опис">
+        <p class = "errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"> error </p>
 
         <label for="city">Місто</label>
         <input type="text" th:field="*{city}" id="city" placeholder="Введіть місто" required>
+        <p class = "errors" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> error </p>
 
         <label for="location">Розташування</label>
         <input type="text" th:field="*{location}" id="location" placeholder="Введіть детальне розташування">
-
+        <p class = "errors" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"> error </p>
 
         <label for="rooms">Кількість кімнат</label>
         <input type="text" th:field="*{rooms}" id="rooms" placeholder="Введіть ціну" required>
+        <p class = "errors" th:if="${#fields.hasErrors('rooms')}" th:errors="*{rooms}"> error </p>
 
         <label for="pricePerNight">Ціна за ніч</label>
         <input type="text" th:field="*{pricePerNight}" id="pricePerNight" placeholder="Введіть ціну" required>
+        <p class = "errors" th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"> error </p>
 
         <button type="submit">Додати</button>
     </form>

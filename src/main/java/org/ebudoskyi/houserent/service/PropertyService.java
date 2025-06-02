@@ -48,6 +48,10 @@ public class PropertyService {
         LocalDate startDate = propertySearch.getStartDate();
         LocalDate endDate = propertySearch.getEndDate();
 
+        if (endDate.isBefore(startDate) || startDate.isEqual(endDate)) {
+            throw new IllegalArgumentException("Start date must be after end date");
+        }
+
         return propertyRepository.findAvailablePropertiesByCityAndDates(city, startDate, endDate);
     }
 

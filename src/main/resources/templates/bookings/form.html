@@ -48,14 +48,14 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-        <a class="navbar-brand" href="/static">Accomodation Search</a>
+        <a class="navbar-brand" href="/">Accomodation Search</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Головна</a>
+                    <a class="nav-link" href="/">Головна</a>
                 </li>
             </ul>
         </div>
@@ -64,15 +64,19 @@
 
 <div class="booking-form-container">
     <h2 th:text="'Бронювання житла: '">Бронювання житла</h2>
-    <h3 th:text="${propertyName}" align="center"> Назва пропозиції</h3>
+    <h3 th:text="${bookingDTO.propertyTitle}" align="center"> Назва пропозиції</h3>
 
     <form th:action="@{/bookings/create}" method="POST" th:object="${bookingDTO}">
+        <input type="hidden" th:field="*{propertyTitle}"/>
         <input type="hidden" th:field="*{propertyId}"/>
         <label for="startDate">Дата заїзду:</label>
         <input type="date" th:field="*{startDate}" id="startDate" required/>
+        <p class = "errors" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"> error </p>
 
         <label for="endDate">Дата виїзду:</label>
         <input type="date" th:field="*{endDate}" id="endDate" required/>
+        <p class = "errors" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"> error </p>
+        <p class = "errors" th:if="${bookingErrorMsg}" th:text="${bookingErrorMsg}"> error </p>
 
         <button type="submit">Підтвердити бронювання</button>
     </form>

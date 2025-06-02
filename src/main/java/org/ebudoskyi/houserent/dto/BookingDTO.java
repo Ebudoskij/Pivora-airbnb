@@ -17,5 +17,5 @@ public class BookingDTO {
     private Long propertyId;
     private LocalDate startDate;
     private LocalDate endDate;
-    private double totalPrice;
+    private Double totalPrice;
 }

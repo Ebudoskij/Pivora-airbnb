@@ -7,12 +7,16 @@ import org.ebudoskyi.houserent.dto.PropertyResponseDTO;
 import org.ebudoskyi.houserent.dto.PropertySearchDTO;
 import org.ebudoskyi.houserent.mapper.PropertyMapper;
 import org.ebudoskyi.houserent.model.Property;
+import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -30,32 +34,26 @@ public class PropertyController {
     }
 
     @GetMapping("/createProperty")
-    public String showPropertyForm(Model model,  HttpSession session) {
-        if (session.getAttribute("authenticated") == null) {
-            return "redirect:/users/login";
-        }
-
-        model.addAttribute("propertyDTO", new PropertyCreationDTO());
+    public String showPropertyForm(Model model) {
+        model.addAttribute("propertyCreationDTO", new PropertyCreationDTO());
         return "properties/create"; // Render property creation page
     }
 
     @PostMapping("/createProperty")
     public String createProperty(
-            @ModelAttribute PropertyCreationDTO propertyDTO,
-            Model model,
-            HttpSession session
+            @ModelAttribute("propertyCreationDTO") @Valid PropertyCreationDTO propertyDTO,
+            BindingResult bindingResult,
+            Model model
     ) {
-        // Get the logged-in user's ID from the session
-        Long userId = (Long) session.getAttribute("userId");
-
-        if (userId == null) {
-            return "redirect:/users/login";
+        if  (bindingResult.hasErrors()) {
+            return "properties/create";
         }
-
-        // Property creation logic
         try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+            Long userId = userPrincipal.getId();
             propertyService.createProperty(userId, propertyDTO);
-            return "redirect:/dashboard"; // Redirect to the list of properties after creation
+            return "redirect:/properties/list";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "properties/create";
@@ -63,73 +61,60 @@ public class PropertyController {
     }
 
     @PostMapping("/delete")
-    public String deleteProperty(@RequestParam Long propertyId, HttpSession session, Model model) {
-        Long userId = (Long) session.getAttribute("userId");
-        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
-
-        if (userId == null || authenticated == null) {
-            return "redirect:/users/login";  // Ensure the user is logged in
-        }
-
-        try {
-            // Call service to delete the property
-            propertyService.deleteProperty(userId, propertyId);
-            return "redirect:/properties/list";  // Redirect to dashboard after deletion
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            return "/dashboard";  // Optionally show an error on the dashboard
-        }
-    }
-
-    // Обробка результатів пошуку
-    @PostMapping("/search")
-    public String searchProperties(
-            @Valid @ModelAttribute("searchDTO") PropertySearchDTO searchDTO,
-            BindingResult bindingResult,
-            Model model,
-            HttpSession session
+    public String deleteProperty(
+            @RequestParam Long propertyId,
+            RedirectAttributes redirectAttributes
     ) {
-        Long userId = (Long) session.getAttribute("userId");
-        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
-        if (userId == null || !authenticated) {
-            return "redirect:/users/login";
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+            Long userId = userPrincipal.getId();
+            propertyService.deleteProperty(userId, propertyId);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("deleteErrorId", propertyId);
+            redirectAttributes.addFlashAttribute("deleteErrorMsg", e.getMessage());
         }
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "dashboard";
-        }
-
-        if (searchDTO.getStartDate().isAfter(searchDTO.getEndDate())) {
-            return "dashboard";
-        }
-
-        List<Property> availableProperties = propertyService.getAvailableProperties(searchDTO);
-        model.addAttribute("properties", availableProperties);
-        return "properties/search"; // тут буде сторінка зі списком житла
+        return "redirect:/properties/list";
     }
 
     @GetMapping("/list")
-    public String listProperties(Model model, HttpSession session) {
-        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
-        Long userId = (Long) session.getAttribute("userId");
-        if (authenticated == null || userId == null) {
-            return "redirect:/users/login";
-        }
+    public String listProperties(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+        Long userId = userPrincipal.getId();
         List<Property> properties = propertyService.getPropertiesByUserId(userId);
         model.addAttribute("properties", properties);
         return "properties/list";
     }
 
-    @GetMapping("/edit")
-    public String showEditForm(@RequestParam Long propertyId, Model model, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
-
-        if (userId == null || authenticated == null) {
-            return "redirect:/users/login";
+    @PostMapping("/search")
+    public String searchProperties(
+            @Valid @ModelAttribute("searchDTO") PropertySearchDTO searchDTO,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "dashboard";
         }
+        try{
+            List<Property> availableProperties = propertyService.getAvailableProperties(searchDTO);
+            redirectAttributes.addFlashAttribute("properties", availableProperties);
+            return "redirect:/properties/search";
+        } catch(IllegalArgumentException e) {
+            model.addAttribute("searchErrorMsg", e.getMessage());
+            return "dashboard";
+        }
+    }
 
+    @GetMapping("/search")
+    public String searchProperties(){
+        return "properties/search";
+    }
+
+
+    @GetMapping("/edit")
+    public String showEditForm(@RequestParam Long propertyId, Model model) {
         Property property = propertyService.getPropertyById(propertyId);
         PropertyResponseDTO propertyEditingDTO = propertyMapper.toDTO(property);
         model.addAttribute("propertyEditingDTO", propertyEditingDTO);
@@ -138,17 +123,21 @@ public class PropertyController {
 
     @PostMapping("/edit")
     public String editProperty(
-            @ModelAttribute PropertyResponseDTO propertyEditingDTO,
-            Model model,
-            HttpSession session){
-        System.out.println(propertyEditingDTO.getId());
-        Long userId = (Long) session.getAttribute("userId");
-        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
-        if (userId == null || authenticated == null) {
-            return "redirect:/users/login";
+            @ModelAttribute("propertyEditingDTO") @Valid PropertyResponseDTO propertyEditingDTO,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ){
+        if  (bindingResult.hasErrors()) {
+            return "properties/edit";
         }
-        propertyService.updateProperty(userId, propertyEditingDTO);
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+            Long userId = userPrincipal.getId();
+            propertyService.updateProperty(userId, propertyEditingDTO);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("editErrorMsg", e.getMessage());
+        }
         return "redirect:/properties/list";
     }
-
 }

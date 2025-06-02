@@ -8,43 +8,46 @@ import org.ebudoskyi.houserent.dto.UserResponseDTO;
 import org.ebudoskyi.houserent.mapper.UserMapper;
 import org.ebudoskyi.houserent.model.User;
 import org.ebudoskyi.houserent.service.UserService;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
-    public UserController(UserService userService) {
+    @Autowired
+    public UserController(UserService userService,  AuthenticationManager authenticationManager) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
     }
 
-    // Registration form display
     @GetMapping("/register")
     public String showRegistrationForm(Model model, HttpSession session) {
-        if (session.getAttribute("authenticated") != null) {
-            return "redirect:/dashboard"; // already logged in
-        }
-
         model.addAttribute("userDTO", new UserRegisterDTO());
         return "users/register"; // templates/users/register.html
     }
 
     @PostMapping("/register")
     public String registerUser(
-            @ModelAttribute("userDTO") UserRegisterDTO userDTO,
-            Model model,
-            HttpSession session
-    ) {
+            @RequestBody @Valid UserRegisterDTO userDTO,
+            HttpSession session,
+            Model model) {
         try {
             User user = userService.registerUser(userDTO);
-            session.setAttribute("authenticated", true);
             session.setAttribute("userId", user.getId()); // optional
             return "redirect:/dashboard";
         } catch (IllegalArgumentException e) {
@@ -53,30 +56,36 @@ public class UserController {
         }
     }
 
-    // Login form display
     @GetMapping("/login")
     public String showLoginForm(Model model , HttpSession session) {
-        if (session.getAttribute("authenticated") != null) {
-            return "redirect:/dashboard";
-        }
         model.addAttribute("userDTO", new UserLoginDTO());
         return "users/login";
     }
-    // Login submission (simplified)
+
     @PostMapping("/login")
     public String loginUser(
-            @ModelAttribute("userDTO") UserLoginDTO userDTO,
-            Model model,
-            HttpSession session
+            @ModelAttribute("userDTO") @Valid UserLoginDTO userDTO,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
     ) {
-        try {
-            User user = userService.login(userDTO);
-            session.setAttribute("authenticated", true);
-            session.setAttribute("userId", user.getId());
-            return "redirect:/dashboard";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDTO", userDTO);
             return "users/login";
+        }
+
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            return "redirect:/";
+
+        } catch (AuthenticationException ex) {
+            redirectAttributes.addFlashAttribute("loginErrorMsg", "Неправильна пошта або пароль");
+            redirectAttributes.addFlashAttribute("userDTO", userDTO);
+            return "redirect:/users/login";
         }
     }
 

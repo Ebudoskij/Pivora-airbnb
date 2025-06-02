@@ -6,35 +6,34 @@ import org.ebudoskyi.houserent.mapper.UserMapper;
 import org.ebudoskyi.houserent.model.Message;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.User;
+import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService{
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository,  UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<User> getAllUsers(){
         return userRepository.findAll();
-    }
-
-    public Optional<User> getUserById(Long id){
-        return userRepository.findById(id);
-    }
-
-    public Optional<User> getUserByEmail(String email){
-        return userRepository.findByEmail(email);
     }
 
     public User saveUser(User user){
@@ -57,7 +56,8 @@ public class UserService {
             throw new IllegalArgumentException("Email already in use");
         }
         User user = userMapper.toEntity(userDTO);
-        return userRepository.save(user); // без шифрування
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword())); //encoding password
+        return userRepository.save(user);
     }
 
     public User login(UserLoginDTO userDTO) {
@@ -81,4 +81,6 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         return user.getReceivedMessages().stream().toList();
     }
+
+
 }

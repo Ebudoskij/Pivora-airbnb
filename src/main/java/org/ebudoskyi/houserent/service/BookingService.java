@@ -45,7 +45,7 @@ public class BookingService {
         Property property = propertyRepository.findById(dto.getPropertyId())
                 .orElseThrow(() -> new IllegalArgumentException("Property not found"));
 
-        if (dto.getStartDate().isBefore(LocalDate.now())){
+        if (dto.getStartDate().isBefore(LocalDate.now()) || dto.getStartDate().isEqual(LocalDate.now())){
             throw new IllegalArgumentException("Start date cannot be before current date");
         }
 
