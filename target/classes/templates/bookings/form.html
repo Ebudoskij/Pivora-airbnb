@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результати пошуку</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <style>
+        .booking-form-container {
+            width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            background-color: #f9f9f9;
+        }
+
+        .booking-form-container h2 {
+            text-align: center;
+        }
+
+        .booking-form-container label,
+        .booking-form-container input,
+        .booking-form-container button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .booking-form-container input {
+            padding: 8px;
+        }
+
+        .booking-form-container button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">Accomodation Search</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Головна</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="booking-form-container">
+    <h2 th:text="'Бронювання житла: '">Бронювання житла</h2>
+    <h3 th:text="${bookingDTO.propertyTitle}" align="center"> Назва пропозиції</h3>
+
+    <form th:action="@{/bookings/create}" method="POST" th:object="${bookingDTO}">
+        <input type="hidden" th:field="*{propertyTitle}"/>
+        <input type="hidden" th:field="*{propertyId}"/>
+        <label for="startDate">Дата заїзду:</label>
+        <input type="date" th:field="*{startDate}" id="startDate" required/>
+        <p class = "errors" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"> error </p>
+
+        <label for="endDate">Дата виїзду:</label>
+        <input type="date" th:field="*{endDate}" id="endDate" required/>
+        <p class = "errors" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"> error </p>
+        <p class = "errors" th:if="${bookingErrorMsg}" th:text="${bookingErrorMsg}"> error </p>
+
+        <button type="submit">Підтвердити бронювання</button>
+    </form>
+</div>
+</body>
+</html>
