@@ -12,8 +12,8 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-        <a class="navbar-brand" href="dashboard.html">
-            <div class="nav-logo">Pivo</div>
+        <a class="navbar-brand" th:href="@{/}">
+            <div class="nav-logo">Pivora</div>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
             <span class="navbar-toggler-icon"></span>
@@ -105,7 +105,7 @@
                     </form>
 
                     <div class="register-link">
-                        <p>Ще не маєте облікового запису? <a href="register.html">Зареєструватися</a></p>
+                        <p>Ще не маєте облікового запису? <a th:href="@{/users/register}">Зареєструватися</a></p>
                     </div>
                 </div>
             </div>
