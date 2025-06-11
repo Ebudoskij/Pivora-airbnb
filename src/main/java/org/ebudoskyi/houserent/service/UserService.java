@@ -1,5 +1,6 @@
 package org.ebudoskyi.houserent.service;
 
+import jakarta.validation.Valid;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.mapper.UserMapper;
@@ -36,10 +37,6 @@ public class UserService{
         return userRepository.findAll();
     }
 
-    public User saveUser(User user){
-        return userRepository.save(user);
-    }
-
     public List<Property>  getPropertiesByUserId(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
@@ -48,16 +45,6 @@ public class UserService{
 
     public void deleteUserById(Long id){
         userRepository.deleteById(id);
-    }
-
-
-    public User registerUser(UserRegisterDTO userDTO) {
-        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already in use");
-        }
-        User user = userMapper.toEntity(userDTO);
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword())); //encoding password
-        return userRepository.save(user);
     }
 
     public User login(UserLoginDTO userDTO) {
@@ -83,4 +70,9 @@ public class UserService{
     }
 
 
+    public void registerNewUser(@Valid UserRegisterDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
 }

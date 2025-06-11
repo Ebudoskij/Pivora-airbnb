@@ -28,8 +28,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+
+    private final UserDetailsService userDetailsService;
+
     @Autowired
-    private UserDetailsService userDetailsService;
+    public SecurityConfiguration(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -77,7 +82,7 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance()); //NoOpPasswordEncoder - no encoder, BCrypt - current encoder
+        provider.setPasswordEncoder(bCryptPasswordEncoder()); //NoOpPasswordEncoder - no encoder, BCrypt - current encoder
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }

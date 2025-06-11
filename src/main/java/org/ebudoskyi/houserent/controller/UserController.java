@@ -38,35 +38,52 @@ public class UserController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model, HttpSession session) {
         model.addAttribute("userDTO", new UserRegisterDTO());
-        return "users/register"; // templates/users/register.html
+        return "users/register";
     }
 
     @PostMapping("/register")
     public String registerUser(
-            @RequestBody @Valid UserRegisterDTO userDTO,
-            HttpSession session,
-            Model model) {
-        try {
-            User user = userService.registerUser(userDTO);
-            session.setAttribute("userId", user.getId()); // optional
-            return "redirect:/dashboard";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
+            @ModelAttribute("userDTO") @Valid UserRegisterDTO userDTO,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDTO", userDTO);
             return "users/register";
+        }
+
+        if (userService.existsByEmail(userDTO.getEmail())) {
+            model.addAttribute("emailErrorMsg", "This email is already in use");
+            model.addAttribute("userDTO", userDTO);
+            return "users/register";
+        }
+
+        userService.registerNewUser(userDTO);
+
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            return "redirect:/";
+        } catch (AuthenticationException e) {
+            redirectAttributes.addFlashAttribute("loginErrorMsg", "Auto login has failed, please try again");
+            return "redirect:/users/login";
         }
     }
 
+
     @GetMapping("/login")
-    public String showLoginForm(Model model , HttpSession session) {
-        model.addAttribute("userDTO", new UserLoginDTO());
-        return "users/login";
+    public String showLoginForm(Model model) {
+       model.addAttribute("userDTO", new UserLoginDTO());
+       return "users/login";
     }
 
     @PostMapping("/login")
     public String loginUser(
             @ModelAttribute("userDTO") @Valid UserLoginDTO userDTO,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
             Model model
     ) {
         if (bindingResult.hasErrors()) {
@@ -83,9 +100,9 @@ public class UserController {
             return "redirect:/";
 
         } catch (AuthenticationException ex) {
-            redirectAttributes.addFlashAttribute("loginErrorMsg", "Неправильна пошта або пароль");
-            redirectAttributes.addFlashAttribute("userDTO", userDTO);
-            return "redirect:/users/login";
+            model.addAttribute("loginErrorMsg", "Password or email are invalid");
+            model.addAttribute("userDTO", userDTO);
+            return "users/login";
         }
     }
 
