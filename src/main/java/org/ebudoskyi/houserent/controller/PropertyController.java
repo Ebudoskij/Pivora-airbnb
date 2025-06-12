@@ -1,6 +1,5 @@
 package org.ebudoskyi.houserent.controller;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.ebudoskyi.houserent.dto.PropertyCreationDTO;
 import org.ebudoskyi.houserent.dto.PropertyResponseDTO;

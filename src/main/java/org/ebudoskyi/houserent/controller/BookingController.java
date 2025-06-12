@@ -2,14 +2,12 @@ package org.ebudoskyi.houserent.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.ebudoskyi.houserent.dto.BookingDTO;
 import org.ebudoskyi.houserent.dto.BookingRequestDTO;
 import org.ebudoskyi.houserent.model.Booking;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.repository.PropertyRepository;
 import org.ebudoskyi.houserent.service.BookingService;
-import org.ebudoskyi.houserent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

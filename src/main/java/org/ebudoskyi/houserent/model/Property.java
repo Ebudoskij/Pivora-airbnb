@@ -36,14 +36,17 @@ public class Property {
     private String location;
 
     @Positive(message = "Price should be a positive number")
+    @NotNull
     @Column(nullable = false)
     private double pricePerNight;
 
     @Positive(message = "Amount of rooms should be a positive number")
+    @NotNull
     @Column(nullable = false)
     private int rooms;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
