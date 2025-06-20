@@ -62,7 +62,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/}">Головна</a>
+                    <a class="nav-link" th:href="@{/}">Main page</a>
                 </li>
             </ul>
         </div>
@@ -70,34 +70,34 @@
 </nav>
 <div class="create-form-container">
     <div class="form-header">
-        <h2>Створіть вашу пропозицію</h2>
+        <h2>Create a new listing</h2>
     </div>
     <form th:action="@{/properties/createProperty}" method="POST" class="create-form" th:object="${propertyCreationDTO}">
-        <label for="title">Назва</label>
-        <input type="text" th:field="*{title}" id="title" placeholder="Введіть заголовок оголошення" required>
+        <label for="title">Title</label>
+        <input type="text" th:field="*{title}" id="title" placeholder="Enter title of listing" required>
         <p class = "errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"> error </p>
 
-        <label for="description">Опис</label>
-        <input type="text" th:field="*{description}" id="description" placeholder="Введіть опис">
+        <label for="description">Description</label>
+        <input type="text" th:field="*{description}" id="description" placeholder="Enter description">
         <p class = "errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"> error </p>
 
-        <label for="city">Місто</label>
-        <input type="text" th:field="*{city}" id="city" placeholder="Введіть місто" required>
+        <label for="city">City</label>
+        <input type="text" th:field="*{city}" id="city" placeholder="Enter city name" required>
         <p class = "errors" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> error </p>
 
-        <label for="location">Розташування</label>
-        <input type="text" th:field="*{location}" id="location" placeholder="Введіть детальне розташування">
+        <label for="location">Location</label>
+        <input type="text" th:field="*{location}" id="location" placeholder="Enter detailed address">
         <p class = "errors" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"> error </p>
 
-        <label for="rooms">Кількість кімнат</label>
-        <input type="text" th:field="*{rooms}" id="rooms" placeholder="Введіть ціну" required>
+        <label for="rooms">Amount of rooms</label>
+        <input type="text" th:field="*{rooms}" id="rooms" placeholder="Enter a number" required>
         <p class = "errors" th:if="${#fields.hasErrors('rooms')}" th:errors="*{rooms}"> error </p>
 
-        <label for="pricePerNight">Ціна за ніч</label>
-        <input type="text" th:field="*{pricePerNight}" id="pricePerNight" placeholder="Введіть ціну" required>
+        <label for="pricePerNight">Price per night</label>
+        <input type="text" th:field="*{pricePerNight}" id="pricePerNight" placeholder="Enter price" required>
         <p class = "errors" th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"> error </p>
 
-        <button type="submit">Додати</button>
+        <button type="submit">Create</button>
     </form>
 
 </div>

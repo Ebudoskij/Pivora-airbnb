@@ -82,7 +82,6 @@ public class UserController {
             HttpServletResponse response
     ) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userDTO", userLoginDTO);
             return "users/login";
         }
 
