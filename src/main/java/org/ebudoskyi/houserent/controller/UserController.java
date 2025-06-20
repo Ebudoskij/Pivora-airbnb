@@ -1,5 +1,6 @@
 package org.ebudoskyi.houserent.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.service.JWTCookiesService;
 import org.ebudoskyi.houserent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -82,7 +84,6 @@ public class UserController {
             HttpServletResponse response
     ) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userDTO", userLoginDTO);
             return "users/login";
         }
 
@@ -95,6 +96,15 @@ public class UserController {
 
         response.addCookie(jwtCookiesService.createCookie(token.get()));
         return "redirect:/";
+    }
+    @GetMapping("/force-logout")
+    public String forceLogout(HttpServletRequest request,
+                              HttpServletResponse response,
+                              RedirectAttributes redirectAttributes)
+    {
+        new SecurityContextLogoutHandler().logout(request, response, null);
+        redirectAttributes.addFlashAttribute("signatureError", "Please login again");
+        return "redirect:/users/login";
     }
 }
 

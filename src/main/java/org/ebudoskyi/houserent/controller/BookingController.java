@@ -2,6 +2,8 @@ package org.ebudoskyi.houserent.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.ebudoskyi.houserent.Exceptions.CustomExceptions.BookingDateException;
+import org.ebudoskyi.houserent.Exceptions.CustomExceptions.PropertyNotFoundException;
 import org.ebudoskyi.houserent.dto.BookingRequestDTO;
 import org.ebudoskyi.houserent.model.Booking;
 import org.ebudoskyi.houserent.model.Property;
@@ -35,7 +37,7 @@ public class BookingController {
     @GetMapping("/create")
     public String showBookingForm(@RequestParam("propertyId") Long propertyId, Model model) {
         Property property = propertyRepository.findById(propertyId)
-                .orElseThrow(() -> new IllegalArgumentException("Житло не знайдено"));
+                .orElseThrow(() -> new PropertyNotFoundException("Property with id " + propertyId + " not found"));
 
         if (!model.containsAttribute("bookingDTO")) {
             BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
@@ -62,7 +64,7 @@ public class BookingController {
             Long userId = userPrincipal.getId();
             bookingService.createBooking(userId, bookingRequestDTO);
             return "redirect:/bookings/list";
-        } catch (IllegalArgumentException e) {
+        } catch (BookingDateException e) {
             redirectAttributes.addFlashAttribute("bookingErrorMsg", e.getMessage());
             redirectAttributes.addFlashAttribute("bookingDTO", bookingRequestDTO);
             return "redirect:/bookings/create?propertyId=" + bookingRequestDTO.getPropertyId();
@@ -86,12 +88,7 @@ public class BookingController {
         UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
         Long userId = userPrincipal.getId();
 
-        try{
-            bookingService.deleteBooking(userId, bookingId);
-        }
-        catch (IllegalArgumentException e){
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-        }
+        bookingService.deleteBooking(userId, bookingId);
         return "redirect:/bookings/list";
     }
 }

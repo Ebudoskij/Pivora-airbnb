@@ -12,9 +12,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,10 +25,12 @@ public class SecurityConfiguration {
 
 
     private final UserDetailsService userDetailsService;
+    private final JwtFilter jwtFilter;
 
     @Autowired
-    public SecurityConfiguration(UserDetailsService userDetailsService) {
+    public SecurityConfiguration(UserDetailsService userDetailsService, JwtFilter jwtFilter) {
         this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -43,12 +48,16 @@ public class SecurityConfiguration {
                                 "/dashboard",
                                 "/").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(form ->  form
-                        .loginPage("/users/login")
-                        .loginProcessingUrl("/users/login")
-                        .defaultSuccessUrl("/")
-                        .failureUrl("/users/login?error=true"))
-                .logout(Customizer.withDefaults())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/users/login")
+                        .deleteCookies("jwt", "JSESSIONID"))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/users/login")) // <== this handles 403 → redirect
+                )
                 .build();
     }
 

@@ -13,11 +13,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserLoginDTO {
-    @NotBlank
+    @NotBlank(message = "Email is mandatory")
     @Email
     private String email;
 
-    @NotBlank
-    @Size(min = 8)
+    @NotBlank(message = "Password is mandatory")
+    //@Size(min = 8)
     private String password;
 }

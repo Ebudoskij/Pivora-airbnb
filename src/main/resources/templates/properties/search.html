@@ -53,27 +53,27 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Головна</a>
+                    <a class="nav-link" th:href="@{/}">Main page</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<h2>Доступні житла</h2>
+<h2>Available listings</h2>
 <div class="serch-container">
 <div th:each="property : ${properties}" class="property">
-    <h3 th:text="${property.title}">Назва</h3>
-    <p><strong>Опис:</strong> <span th:text="${property.description}">Опис</span></p>
-    <p><strong>Місто:</strong> <span th:text="${property.city}">Місто</span></p>
-    <p><strong>Адреса:</strong> <span th:text="${property.location}">Локація</span></p>
-    <p><strong>Кількість кімнат:</strong> <span th:text="${property.rooms}">0</span></p>
-    <p><strong>Ціна за ніч:</strong> <span th:text="${property.pricePerNight}">0</span> грн</p>
+    <h3 th:text="${property.title}">Title</h3>
+    <p><strong>Description:</strong> <span th:text="${property.description}">Опис</span></p>
+    <p><strong>City:</strong> <span th:text="${property.city}">City</span></p>
+    <p><strong>Адреса:</strong> <span th:text="${property.location}">Location</span></p>
+    <p><strong>Amount of rooms:</strong> <span th:text="${property.rooms}">0</span></p>
+    <p><strong>Price per night:</strong> <span th:text="${property.pricePerNight}">0</span> грн</p>
 
     <!-- Форма для бронювання -->
     <form th:action="@{/bookings/create}" method="GET">
         <input type="hidden" name="propertyId" th:value="${property.id}" />
-        <button type="submit">Забронювати</button>
+        <button type="submit">Book now</button>
     </form>
 </div>
 </div>

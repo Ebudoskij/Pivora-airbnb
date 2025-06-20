@@ -1,6 +1,6 @@
 package org.ebudoskyi.houserent.service;
 
-import org.ebudoskyi.houserent.dto.BookingDTO;
+import org.ebudoskyi.houserent.Exceptions.CustomExceptions.*;
 import org.ebudoskyi.houserent.dto.BookingRequestDTO;
 import org.ebudoskyi.houserent.model.Booking;
 import org.ebudoskyi.houserent.model.Property;
@@ -31,26 +31,24 @@ public class BookingService {
         this.userRepository = userRepository;
     }
 
-    // Check if the property is available for the specified date range
     public boolean isPropertyAvailable(Long propertyId, LocalDate startDate, LocalDate endDate) {
         return !bookingRepository.existsByPropertyIdAndStartDateBetweenOrEndDateBetween(
                 propertyId, startDate, endDate, startDate, endDate);
     }
 
-    // Create a new booking
     public Booking createBooking(Long userId, BookingRequestDTO dto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        Property property = propertyRepository.findById(dto.getPropertyId())
-                .orElseThrow(() -> new IllegalArgumentException("Property not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with " + userId + " not found"));
+        Long propertyId = dto.getPropertyId();
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new PropertyNotFoundException("Property with id " + propertyId + " not found"));
 
         if (dto.getStartDate().isBefore(LocalDate.now()) || dto.getStartDate().isEqual(LocalDate.now())){
-            throw new IllegalArgumentException("Start date cannot be before current date");
+            throw new BookingDateException("Check-in date must be in future");
         }
 
         if (dto.getEndDate().isBefore(dto.getStartDate())) {
-            throw new IllegalArgumentException("End date cannot be before start date");
+            throw new BookingDateException("Check-out date must be after check-in date");
         }
 
         List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
@@ -58,7 +56,7 @@ public class BookingService {
         );
 
         if (!overlappingBookings.isEmpty()) {
-            throw new IllegalArgumentException("This property is already booked for the selected dates");
+            throw new AlreadyBookedException("This property is already booked for the selected dates");
         }
 
         long nights = ChronoUnit.DAYS.between(dto.getStartDate(), dto.getEndDate());
@@ -74,38 +72,20 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-
-    // Cancel a booking
-    public void cancelBooking(Long bookingId) {
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
-
-        bookingRepository.delete(booking);
-    }
-
-    // Get all bookings for a user
     public List<Booking> getBookingsByUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
         return bookingRepository.findByTenant(user);
     }
 
-    // Get all bookings for a property
-    public List<Booking> getBookingsByProperty(Long propertyId) {
-        Property property = propertyRepository.findById(propertyId)
-                .orElseThrow(() -> new IllegalArgumentException("Property not found"));
-
-        return bookingRepository.findByProperty(property);
-    }
-
     public void deleteBooking(Long userId, Long bookingId) {
         Booking booking =  bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+                .orElseThrow(() -> new BookingNotFoundException("Booking with id" + bookingId + " not found"));
         User  user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with Id" + userId + " qnot found"));
         if (!booking.getTenant().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("You can only delete your booking!");
+            throw new IllegalBookingAccessException("You can only delete your booking!");
         }
         bookingRepository.delete(booking);
     }

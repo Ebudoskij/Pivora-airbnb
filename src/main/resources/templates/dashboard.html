@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const flash = document.getElementById('flashMessage');
+            if (flash) {
+                setTimeout(() => {
+                    flash.style.opacity = '0';
+                    setTimeout(() => {
+                        flash.remove(); // повністю прибрати елемент після анімації
+                    }, 1000); // збігається з CSS transition
+                }, 3000); // 3 секунди після завантаження сторінки
+            }
+        });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light">
@@ -27,10 +40,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/bookings/list">Your bookings</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${username}" th:text="${username}"> </a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<div id="flashMessage" th:if="${error}" class="flash-message">
+    <span th:text="${error}"></span>
+</div>
 
 <div class="home-container">
     <div class="home-search-section">

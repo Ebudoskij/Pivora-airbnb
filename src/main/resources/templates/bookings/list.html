@@ -44,7 +44,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/}">Головна</a>
+                    <a class="nav-link" th:href="@{/}">Main page</a>
                 </li>
             </ul>
         </div>
@@ -52,22 +52,22 @@
 </nav>
 
 <div class="property-list">
-    <h2>Ваші бронювання</h2>
+    <h2>Your bookings</h2>
 
     <div th:if="${bookings.isEmpty()}">
-        <p>У вас ще немає оголошень.</p>
+        <p>You haven`t booked any accommodation yet</p>
     </div>
 
     <div th:each="booking : ${bookings}" class="property">
-        <h3 th:text="${booking.property.title}">Назва</h3>
-        <p><strong>Дата заїзду:</strong> <span th:text="${booking.startDate}">Дата</span></p>
-        <p><strong>Дата виїзду:</strong> <span th:text="${booking.endDate}">Дата</span></p>
-        <p><strong>Сума:</strong> <span th:text="${booking.totalPrice}">0</span> грн</p>
+        <h3 th:text="${booking.property.title}">Title</h3>
+        <p><strong>Check-in:</strong> <span th:text="${booking.startDate}">Date</span></p>
+        <p><strong>Check-out:</strong> <span th:text="${booking.endDate}">Date</span></p>
+        <p><strong>Total:</strong> <span th:text="${booking.totalPrice}">0</span> hryvnas</p>
 
         <form th:action="@{/bookings/delete}" method="post">
             <input type="hidden" name="bookingId" th:value="${booking.id}" />
-            <button type="submit" onclick="return confirm('Ви впевнені, що хочете видалити це оголошення?')">
-                Видалити
+            <button type="submit" onclick="return confirm('Are you sure about canceling this booking?')">
+                Cancel
             </button>
         </form>
     </div>

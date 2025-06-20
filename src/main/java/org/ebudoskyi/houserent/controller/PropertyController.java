@@ -35,45 +35,33 @@ public class PropertyController {
     @GetMapping("/createProperty")
     public String showPropertyForm(Model model) {
         model.addAttribute("propertyCreationDTO", new PropertyCreationDTO());
-        return "properties/create"; // Render property creation page
+        return "properties/create";
     }
 
     @PostMapping("/createProperty")
     public String createProperty(
             @ModelAttribute("propertyCreationDTO") @Valid PropertyCreationDTO propertyDTO,
-            BindingResult bindingResult,
-            Model model
+            BindingResult bindingResult
     ) {
         if  (bindingResult.hasErrors()) {
             return "properties/create";
         }
-        try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
             Long userId = userPrincipal.getId();
             propertyService.createProperty(userId, propertyDTO);
             return "redirect:/properties/list";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            return "properties/create";
-        }
     }
 
     @PostMapping("/delete")
     public String deleteProperty(
-            @RequestParam Long propertyId,
-            RedirectAttributes redirectAttributes
+            @RequestParam Long propertyId
     ) {
-        try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
             Long userId = userPrincipal.getId();
             propertyService.deleteProperty(userId, propertyId);
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("deleteErrorId", propertyId);
-            redirectAttributes.addFlashAttribute("deleteErrorMsg", e.getMessage());
-        }
-        return "redirect:/properties/list";
+            return "redirect:/properties/list";
     }
 
     @GetMapping("/list")
@@ -96,14 +84,9 @@ public class PropertyController {
         if (bindingResult.hasErrors()) {
             return "dashboard";
         }
-        try{
             List<Property> availableProperties = propertyService.getAvailableProperties(searchDTO);
             redirectAttributes.addFlashAttribute("properties", availableProperties);
             return "redirect:/properties/search";
-        } catch(IllegalArgumentException e) {
-            model.addAttribute("searchErrorMsg", e.getMessage());
-            return "dashboard";
-        }
     }
 
     @GetMapping("/search")

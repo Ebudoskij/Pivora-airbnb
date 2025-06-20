@@ -1,10 +1,10 @@
 package org.ebudoskyi.houserent.service;
 
+import org.ebudoskyi.houserent.Exceptions.CustomExceptions.*;
 import org.ebudoskyi.houserent.dto.PropertyCreationDTO;
 import org.ebudoskyi.houserent.dto.PropertyResponseDTO;
 import org.ebudoskyi.houserent.dto.PropertySearchDTO;
 import org.ebudoskyi.houserent.mapper.PropertyMapper;
-import org.ebudoskyi.houserent.model.Booking;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.User;
 import org.ebudoskyi.houserent.repository.PropertyRepository;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,16 +30,15 @@ public class PropertyService {
     }
 
     public Property createProperty(Long userId, PropertyCreationDTO propertyDTO) {
-        // Get the user by userId to associate the property with them
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
         Property property = propertyMapper.ToEntity(propertyDTO);
         property.setOwner(user);
         return propertyRepository.save(property);
     }
 
     public List<Property> getPropertiesByUserId(Long userId) {
-        return propertyRepository.findByOwnerId(userId); // Assuming the custom query is in the repo
+        return propertyRepository.findByOwnerId(userId);
     }
 
     public List<Property> getAvailableProperties(PropertySearchDTO propertySearch) {
@@ -49,22 +47,22 @@ public class PropertyService {
         LocalDate endDate = propertySearch.getEndDate();
 
         if (endDate.isBefore(startDate) || startDate.isEqual(endDate)) {
-            throw new IllegalArgumentException("Start date must be after end date");
+            throw new SearchDateException("Start date must be after end date");
         }
 
         return propertyRepository.findAvailablePropertiesByCityAndDates(city, startDate, endDate);
     }
 
-    public Property getPropertyById(Long id) {
-        return propertyRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Property not found"));
+    public Property getPropertyById(Long propertyId){
+        return propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new PropertyNotFoundException("Property witn id" + propertyId + " not found"));
     }
 
     public Property updateProperty(Long userId, PropertyResponseDTO propertyDetails) {
         Property property = propertyRepository.findById(propertyDetails.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Property not found"));
+                .orElseThrow(() -> new PropertyNotFoundException("Property not found"));
         if (!property.getOwner().getId().equals(userId)) {
-            throw new IllegalArgumentException("User does not own this property");
+            throw new IllegalPropertyAccessException("User does not own this property");
         }
 
         property.setTitle(propertyDetails.getTitle());
@@ -78,12 +76,12 @@ public class PropertyService {
 
     public void deleteProperty(Long userId, Long propertyId) {
         Property property = propertyRepository.findById(propertyId)
-                .orElseThrow(() -> new IllegalArgumentException("Property not found"));
+                .orElseThrow(() -> new PropertyNotFoundException("Property with id" + propertyId + " not found"));
         User owner = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
         if (!property.getOwner().getId().equals(owner.getId())) {
-            throw new IllegalArgumentException("You can only delete your property!");
+            throw new IllegalPropertyAccessException("You can only delete your property!");
         }
         propertyRepository.delete(property);
     }
