@@ -6,7 +6,6 @@
     <title>Main page</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <script>
         window.addEventListener('DOMContentLoaded', () => {
@@ -32,13 +31,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/properties/createProperty">Create a listing</a>
+                    <a class="nav-link" th:href="@{/properties/createProperty}">Create a listing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/properties/list">Your listings</a>
+                    <a class="nav-link" th:href="@{/properties/list}">Your listings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/bookings/list">Your bookings</a>
+                    <a class="nav-link" th:href="@{/bookings/list}">Your bookings</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:if="${username}" th:text="${username}"> </a>
@@ -79,7 +78,7 @@
             <form th:action="@{/properties/search}" th:object="${searchDTO}" method="POST">
 
                 <label for="city" class="city-label">City</label>
-                <input type="text" id ="city" th:field="*{city}" class="search-input" placeholder="Введіть місто" />
+                <input type="text" id ="city" th:field="*{city}" class="search-input" placeholder="Enter city" />
                 <p class = "errors" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> error </p>
 
                 <label for="check-in-date" class="date-label">Check-in</label>

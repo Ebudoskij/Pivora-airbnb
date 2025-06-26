@@ -1,5 +1,37 @@
 /* Стилі для сторінки пошуку */
 
+.search-container{
+    align-self: center;
+}
+
+.property {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+    max-width: 500px;
+    background-color: #f9f9f9;
+}
+
+button {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+}
+
 /* Шапка з пошуковими параметрами */
 .search-header {
     background-color: var(--light-bg);

@@ -53,10 +53,8 @@ public class PropertyController {
             return "redirect:/properties/list";
     }
 
-    @PostMapping("/delete")
-    public String deleteProperty(
-            @RequestParam Long propertyId
-    ) {
+    @PostMapping("/delete/{propertyId}")
+    public String deleteProperty(@PathVariable Long propertyId) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
             Long userId = userPrincipal.getId();
@@ -78,8 +76,7 @@ public class PropertyController {
     public String searchProperties(
             @Valid @ModelAttribute("searchDTO") PropertySearchDTO searchDTO,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            Model model
+            RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
             return "dashboard";
@@ -95,8 +92,8 @@ public class PropertyController {
     }
 
 
-    @GetMapping("/edit")
-    public String showEditForm(@RequestParam Long propertyId, Model model) {
+    @GetMapping("/edit/{propertyId}")
+    public String showEditForm(@PathVariable Long propertyId, Model model) {
         Property property = propertyService.getPropertyById(propertyId);
         PropertyResponseDTO propertyEditingDTO = propertyMapper.toDTO(property);
         model.addAttribute("propertyEditingDTO", propertyEditingDTO);

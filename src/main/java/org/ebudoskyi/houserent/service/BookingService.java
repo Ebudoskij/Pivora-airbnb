@@ -43,12 +43,8 @@ public class BookingService {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new PropertyNotFoundException("Property with id " + propertyId + " not found"));
 
-        if (dto.getStartDate().isBefore(LocalDate.now()) || dto.getStartDate().isEqual(LocalDate.now())){
-            throw new BookingDateException("Check-in date must be in future");
-        }
-
         if (dto.getEndDate().isBefore(dto.getStartDate())) {
-            throw new BookingDateException("Check-out date must be after check-in date");
+            throw new BookingDateException("Check-out date must be after check-in date", propertyId);
         }
 
         List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(

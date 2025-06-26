@@ -6,9 +6,8 @@
     <title>Результати пошуку</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/search.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
     <style>
         .booking-form-container {
             width: 400px;
@@ -63,7 +62,7 @@
 </nav>
 
 <div class="booking-form-container">
-    <h2 th:text="'Бронювання житла: '">Booking</h2>
+    <h2>Booking</h2>
     <h3 th:text="${bookingDTO.propertyTitle}" align="center"> Title of listing</h3>
 
     <form th:action="@{/bookings/create}" method="POST" th:object="${bookingDTO}">

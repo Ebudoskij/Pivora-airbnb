@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -34,17 +33,15 @@ public class BookingController {
         this.propertyRepository = propertyRepository;
     }
 
-    @GetMapping("/create")
-    public String showBookingForm(@RequestParam("propertyId") Long propertyId, Model model) {
+    @GetMapping("/create/{propertyId}")
+    public String showBookingForm(@PathVariable Long propertyId, Model model) {
         Property property = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new PropertyNotFoundException("Property with id " + propertyId + " not found"));
 
-        if (!model.containsAttribute("bookingDTO")) {
-            BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
-            bookingRequestDTO.setPropertyId(propertyId);
-            bookingRequestDTO.setPropertyTitle(property.getTitle());
-            model.addAttribute("bookingDTO", bookingRequestDTO);
-        }
+        BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+        bookingRequestDTO.setPropertyId(propertyId);
+        bookingRequestDTO.setPropertyTitle(property.getTitle());
+        model.addAttribute("bookingDTO", bookingRequestDTO);
 
         return "bookings/form";
     }
@@ -52,23 +49,16 @@ public class BookingController {
     @PostMapping("/create")
     public String createBooking(
             @ModelAttribute("bookingDTO") @Valid BookingRequestDTO bookingRequestDTO,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+            BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             return "bookings/form";
         }
-        try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
             Long userId = userPrincipal.getId();
             bookingService.createBooking(userId, bookingRequestDTO);
             return "redirect:/bookings/list";
-        } catch (BookingDateException e) {
-            redirectAttributes.addFlashAttribute("bookingErrorMsg", e.getMessage());
-            redirectAttributes.addFlashAttribute("bookingDTO", bookingRequestDTO);
-            return "redirect:/bookings/create?propertyId=" + bookingRequestDTO.getPropertyId();
-        }
     }
 
     @GetMapping("/list")
@@ -82,8 +72,8 @@ public class BookingController {
         return "bookings/list";
     }
 
-    @PostMapping("/delete")
-    public String deleteBooking(@RequestParam("bookingId") Long bookingId, RedirectAttributes redirectAttributes, HttpSession session){
+    @PostMapping("/delete/{bookingId}")
+    public String deleteBooking(@PathVariable Long bookingId){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
         Long userId = userPrincipal.getId();

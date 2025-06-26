@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вхід - Pivo</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/login.css">
 </head>
@@ -27,7 +26,7 @@
             <div class="col-lg-6 left-section">
                 <div class="pivo-brand">
                     <h1>Вітаємо на <span>Pivo</span></h1>
-                    <p class="welcome-text">Увійдіть, щоб отримати доступ до найкращих пропозицій оренди житла по всій Україні.</p>
+                    <p class="welcome-text">Sign up to gain access to the best rent listings!</p>
 
                     <div class="features">
                         <div class="feature-item">
@@ -37,8 +36,8 @@
                                 </svg>
                             </div>
                             <div class="feature-text">
-                                <h3>Безпечно</h3>
-                                <p>Ваші дані надійно захищено</p>
+                                <h3>Safe</h3>
+                                <p>Your data is secured</p>
                             </div>
                         </div>
 
@@ -50,8 +49,8 @@
                                 </svg>
                             </div>
                             <div class="feature-text">
-                                <h3>Персоналізовано</h3>
-                                <p>Підбір пропозицій за вашими уподобаннями</p>
+                                <h3>Personalized</h3>
+                                <p>Search based on your preferences</p>
                             </div>
                         </div>
 
@@ -63,18 +62,18 @@
                                 </svg>
                             </div>
                             <div class="feature-text">
-                                <h3>Зручно</h3>
-                                <p>Швидкий пошук та бронювання</p>
+                                <h3>Convenient</h3>
+                                <p>Rapid searching and booking</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="currency-info">
                         <div class="currency-item">
-                            <span class="currency-value">$1 = 42.50 грн</span>
+                            <span class="currency-value">$1 = 42.50 hryvnas</span>
                         </div>
                         <div class="currency-item">
-                            <span class="currency-value">€1 = 45.80 грн</span>
+                            <span class="currency-value">€1 = 45.80 hryvnas</span>
                         </div>
                     </div>
                 </div>
@@ -83,21 +82,21 @@
             <div class="col-lg-6 right-section">
                 <div class="login-form-container">
                     <div class="form-header">
-                        <h2>Реєстрація нового облікового запису</h2>
-                        <p>Раді бачити нового користувача! Заповнюйте форму і поїхали!</p>
+                        <h2>Create a new account</h2>
+                        <p>Good to see new user! Sign up and let`s start searching!</p>
                     </div>
 
                     <form th:action="@{/users/register}" method="post" class="login-form" th:object="${userDTO}">
 
                         <div class="form-group">
                             <label for="name">Ваше ім'я</label>
-                            <input type="text" class="form-control" id="name" th:field="*{name}" name="name" placeholder="Введіть ім'я" required>
+                            <input type="text" class="form-control" id="name" th:field="*{name}" name="name" placeholder="Enter name" required>
                             <p class="errors" th:if="${#fields.hasErrors('name')}" th:erros="*{name}"> error </p>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email адреса</label>
+                            <label for="email">Email</label>
                                 <div class="input-with-icon">
-                                    <input type="email" class="form-control" id="email" th:field="*{email}" name="email" placeholder="Введіть email" required>
+                                    <input type="email" class="form-control" id="email" th:field="*{email}" name="email" placeholder="Enter email" required>
                                     <span clas="input-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
@@ -109,9 +108,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Пароль</label>
+                            <label for="password">Password</label>
                             <div class="input-with-icon">
-                                <input type="password" class="form-control" id="password" th:field="*{password}" name="password" placeholder="Введіть пароль" required>
+                                <input type="password" class="form-control" id="password" th:field="*{password}" name="password" placeholder="Enter password" required>
                                 <span class="input-icon toggle-password" onclick="togglePasswordVisibility()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
@@ -121,11 +120,11 @@
                             </div>
                             <p class="errors" th:if="${#fields.hasErrors()}" th:errors="*{password}"> errors </p>
                         </div>
-                        <button type="submit" class="btn login-btn">Зареєструватись</button>
+                        <button type="submit" class="btn login-btn">Sign up</button>
                     </form>
                     <div>
-                        Вже маєте акаунт? Просто
-                        <a href="/users/login"> увійдіть </a>
+                        Have already created an account? Just
+                        <a th:href="@{/users/login}"> log in </a>
                     </div>
                 </div>
             </div>

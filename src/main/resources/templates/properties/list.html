@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мої оголошення</title>
+    <title>My listings</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <style>
         .property-list {
@@ -59,23 +58,20 @@
     </div>
 
     <div th:each="property : ${properties}" class="property">
-        <h3 th:text="${property.title}">Title</h3>
-        <p><strong>Description:</strong> <span th:text="${property.description}">description</span></p>
-        <p><strong>Amount of rooms:</strong> <span th:text="${property.rooms}">0</span></p>
-        <p><strong>Price per night:</strong> <span th:text="${property.pricePerNight}">0</span> грн</p>
-
-        <form th:action="@{/properties/delete}" method="post">
-            <input type="hidden" name="propertyId" th:value="${property.id}" />
-            <button type="submit" onclick="return confirm('Are sure about deleting this listing?')">
-                 Delete
-            </button>
-        </form>
-        <form th:action="@{/properties/edit}" method="get">
-            <input type="hidden" name="propertyId" th:value="${property.id}" />
-            <button type="submit">
-                Edit
-            </button>
-        </form>
+        <div th:object="${property}">
+            <h3 th:text="*{title}">Title</h3>
+            <p><strong>Description:</strong> <span th:text="*{description}">description</span></p>
+            <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
+            <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}">0</span> грн</p>
+            <form th:action="@{/properties/delete/{propertyId}(propertyId=*{id})}" method="post" onsubmit="return confirm('Are sure about deleting this listing?')">
+                <button type="submit">
+                    Delete
+                </button>
+            </form>
+            <a th:href="@{/properties/edit/{propertyId}(propertyId=*{id})}">
+                <button type="button">Edit</button>
+            </a>
+        </div>
     </div>
 </div>
 

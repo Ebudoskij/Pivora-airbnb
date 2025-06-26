@@ -6,7 +6,6 @@
     <title>Мої бронювання</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <style>
         .property-list {
@@ -59,17 +58,18 @@
     </div>
 
     <div th:each="booking : ${bookings}" class="property">
-        <h3 th:text="${booking.property.title}">Title</h3>
-        <p><strong>Check-in:</strong> <span th:text="${booking.startDate}">Date</span></p>
-        <p><strong>Check-out:</strong> <span th:text="${booking.endDate}">Date</span></p>
-        <p><strong>Total:</strong> <span th:text="${booking.totalPrice}">0</span> hryvnas</p>
+        <div th:object="${booking}">
+            <h3 th:text="*{property.title}">Title</h3>
+            <p><strong>Check-in:</strong> <span th:text="*{startDate}">Date</span></p>
+            <p><strong>Check-out:</strong> <span th:text="*{endDate}">Date</span></p>
+            <p><strong>Total:</strong> <span th:text="*{totalPrice}">0</span> hryvnas</p>
 
-        <form th:action="@{/bookings/delete}" method="post">
-            <input type="hidden" name="bookingId" th:value="${booking.id}" />
-            <button type="submit" onclick="return confirm('Are you sure about canceling this booking?')">
-                Cancel
-            </button>
-        </form>
+            <form th:action="@{/bookings/delete/{bookingId}(bookingId=*{id})}" onsubmit="return confirm('Are you sure about canceling this booking?')" method="post">
+                <button type="submit">
+                    Cancel
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 
