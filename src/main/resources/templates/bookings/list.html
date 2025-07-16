@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мої бронювання</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .property-list {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-radius: 12px;
+        }
+
+        .property {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #ffffff;
+        }
+
+        .property h3 {
+            margin: 0 0 10px;
+        }
+
+        .property p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">Pivora</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">Main page</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="property-list">
+    <h2>Your bookings</h2>
+
+    <div th:if="${bookings.isEmpty()}">
+        <p>You haven`t booked any accommodation yet</p>
+    </div>
+
+    <div th:each="booking : ${bookings}" class="property">
+        <div th:object="${booking}">
+            <h3 th:text="*{property.title}">Title</h3>
+            <p><strong>Check-in:</strong> <span th:text="*{startDate}">Date</span></p>
+            <p><strong>Check-out:</strong> <span th:text="*{endDate}">Date</span></p>
+            <p><strong>Total:</strong> <span th:text="*{totalPrice}">0</span> hryvnas</p>
+
+            <form th:action="@{/bookings/delete/{bookingId}(bookingId=*{id})}" onsubmit="return confirm('Are you sure about canceling this booking?')" method="post">
+                <button type="submit">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

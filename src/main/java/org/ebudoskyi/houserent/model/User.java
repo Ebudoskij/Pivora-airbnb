@@ -3,7 +3,6 @@ package org.ebudoskyi.houserent.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -23,18 +22,15 @@ public class User {
     private Long id;
 
     @NotBlank(message = "Name shouldn`t be empty or null")
-    @Size(min=2, message = "Name should consist of at least 2 characters")
     @Column(nullable = false)
     private String name;
 
     @NotBlank
-    @Size(max = 255)
     @Email
     @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank
-    @Size(min=8)
     @Column(nullable = false)
     private String password;
 

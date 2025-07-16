@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результати пошуку</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">Pivora</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Перемикач навігації">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Main page</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<h2>Available listings</h2>
+<div class="serch-container">
+<div th:each="property : ${properties}" class="property">
+    <div th:object="${property}">
+    <h3 th:text="*{title}">Title</h3>
+    <p><strong>Description:</strong> <span th:text="*{description}">Опис</span></p>
+    <p><strong>City:</strong> <span th:text="*{city}">City</span></p>
+    <p><strong>Location:</strong> <span th:text="*{location}">Location</span></p>
+    <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
+    <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}">0</span> грн</p>
+    <a th:href="@{/bookings/create/{propertyId}(propertyId=*{id})}">
+        <button type="button">Book now</button>
+    </a>
+    </div>
+</div>
+</div>
+</body>
+</html>

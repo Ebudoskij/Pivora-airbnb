@@ -1,6 +1,5 @@
 package org.ebudoskyi.houserent.service;
 
-import jakarta.validation.Valid;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.mapper.UserMapper;
@@ -10,9 +9,11 @@ import org.ebudoskyi.houserent.model.User;
 import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +26,20 @@ public class UserService{
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository,
+                       UserMapper userMapper,
+                       BCryptPasswordEncoder bCryptPasswordEncoder,
+                       AuthenticationManager authenticationManager,
+                       JWTService jwtService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public List<User> getAllUsers(){
@@ -46,11 +55,23 @@ public class UserService{
     public void deleteUserById(Long id){
         userRepository.deleteById(id);
     }
+    
+    public Optional<String> login(UserLoginDTO userDTO) {
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
+            );
 
-    public User login(UserLoginDTO userDTO) {
-        return userRepository.findByEmail(userDTO.getEmail())
-                .filter(user -> user.getPassword().equals(userDTO.getPassword()))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+            String token = jwtService.generateToken(userPrincipal.getUsername());
+
+            return Optional.of(token);
+        } catch (AuthenticationException ex) {
+
+            return Optional.empty();
+        }
     }
 
     public boolean existsByEmail(String email) {
@@ -69,10 +90,17 @@ public class UserService{
         return user.getReceivedMessages().stream().toList();
     }
 
-
-    public void registerNewUser(@Valid UserRegisterDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    
+    public Optional<UserLoginDTO> registerNewUser(UserRegisterDTO userRegisterDTO) {
+        if (existsByEmail(userRegisterDTO.getEmail())) {
+            return Optional.empty();
+        }
+        User user = userMapper.toEntity(userRegisterDTO);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        UserLoginDTO  userLoginDTO = new  UserLoginDTO();
+        userLoginDTO.setEmail(userRegisterDTO.getEmail());
+        userLoginDTO.setPassword(userRegisterDTO.getPassword());
+        return Optional.of(userLoginDTO);
     }
 }
