@@ -1,0 +1,59 @@
+.property-list {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+}
+
+.property-desc {
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+}
+
+.property-desc h3 {
+    margin: 0 0 10px;
+}
+
+.property-desc p {
+    margin: 5px 0;
+}
+.property-desc form{
+    display: inline-block;
+}
+.property-desc button{
+    margin-right: 20px;
+    margin-top: 20px;
+    font-size: 1.3em;
+    border-radius: 8px;
+    border: none;
+    padding: 5px 7px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.delete-button{
+    background-color: var(--dark-bg);
+    color: #fff;
+}
+.delete-button:hover{
+    background-color: rgba(44, 62, 80, 0.95);
+}
+.delete-button:active{
+    background-color: rgba(44, 62, 80, 0.9);
+}
+.edit-button{
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+.edit-button:hover {
+    background-color: rgba(39, 174, 96, 0.9);
+}
+
+.edit-button:active{
+    background-color: rgba(39, 174, 96, 0.8);
+}
