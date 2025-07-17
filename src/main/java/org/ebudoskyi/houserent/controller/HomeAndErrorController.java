@@ -2,7 +2,10 @@ package org.ebudoskyi.houserent.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.ebudoskyi.houserent.dto.PropertySearchDTO;
+import org.ebudoskyi.houserent.model.CurrencyRates;
 import org.ebudoskyi.houserent.model.UserPrincipal;
+import org.ebudoskyi.houserent.service.CurrencyRatesApiServices.CurrencyRatesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeAndErrorController {
+
+    private final CurrencyRatesService currencyRatesService;
+
+    @Autowired
+    public HomeAndErrorController(CurrencyRatesService currencyRatesService) {
+        this.currencyRatesService = currencyRatesService;
+    }
 
     @GetMapping("/")
     public String dashboard(Model model) {
@@ -31,6 +41,8 @@ public class HomeAndErrorController {
                 }
             }
         }
+        CurrencyRates currencyRates = currencyRatesService.getCurrencyRates("UAH");
+        model.addAttribute("currencyRates", currencyRates);
         return "dashboard";
     }
 

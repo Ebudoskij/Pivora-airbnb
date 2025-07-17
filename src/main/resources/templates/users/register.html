@@ -65,10 +65,10 @@
 
             <div class="currency-exchange">
                 <div class="currency-item">
-                    <span class="currency-value">$1 = 42.50 hryvnas</span>
+                    <span class="currency-value" th:if="${currencyRates}" th:text="'$1 = ' + ${currencyRates.getUSD()} + 'UAH'">$1 = 42.50 hryvnas</span>
                 </div>
                 <div class="currency-item">
-                    <span class="currency-value">€1 = 45.80 hryvnas</span>
+                    <span class="currency-value" th:if="${currencyRates}" th:text="'$1 = ' + ${currencyRates.getEUR()} + 'UAH'">€1 = 45.80 hryvnas</span>
                 </div>
             </div>
         </div>

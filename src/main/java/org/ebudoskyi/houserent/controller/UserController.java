@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 
+import org.ebudoskyi.houserent.model.CurrencyRates;
+import org.ebudoskyi.houserent.service.CurrencyRatesApiServices.CurrencyRatesService;
 import org.ebudoskyi.houserent.service.JWTCookiesService;
 import org.ebudoskyi.houserent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +26,21 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-
     private final JWTCookiesService jwtCookiesService;
+    private final CurrencyRatesService currencyRatesService;
 
     @Autowired
-    public UserController(UserService userService, JWTCookiesService jwtCookiesService) {
+    public UserController(UserService userService, JWTCookiesService jwtCookiesService, CurrencyRatesService currencyRatesService) {
         this.userService = userService;
         this.jwtCookiesService = jwtCookiesService;
+        this.currencyRatesService = currencyRatesService;
     }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model, HttpSession session) {
         model.addAttribute("userDTO", new UserRegisterDTO());
+        CurrencyRates currencyRates = currencyRatesService.getCurrencyRates("UAH");
+        model.addAttribute("currencyRates", currencyRates);
         return "users/register";
     }
 
@@ -75,6 +80,8 @@ public class UserController {
     @GetMapping("/login")
     public String showLoginForm(Model model) {
        model.addAttribute("userDTO", new UserLoginDTO());
+        CurrencyRates currencyRates = currencyRatesService.getCurrencyRates("UAH");
+        model.addAttribute("currencyRates", currencyRates);
        return "users/login";
     }
 
