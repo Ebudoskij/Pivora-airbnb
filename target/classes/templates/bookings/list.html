@@ -13,6 +13,10 @@
     <a class="navbar-brand" th:href="@{/}">Pivora</a>
 </nav>
 
+<div id="flashMessage" th:if="${error}" class="flash-message">
+    <span th:text="${error}"></span>
+</div>
+
 <div class="property-list">
     <h2>Your bookings</h2>
 

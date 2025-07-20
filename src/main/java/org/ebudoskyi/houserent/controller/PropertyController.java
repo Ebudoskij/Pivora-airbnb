@@ -10,6 +10,7 @@ import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,31 +42,26 @@ public class PropertyController {
     @PostMapping("/createProperty")
     public String createProperty(
             @ModelAttribute("propertyCreationDTO") @Valid PropertyCreationDTO propertyDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             BindingResult bindingResult
     ) {
         if  (bindingResult.hasErrors()) {
             return "properties/create";
         }
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
             Long userId = userPrincipal.getId();
             propertyService.createProperty(userId, propertyDTO);
             return "redirect:/properties/list";
     }
 
     @PostMapping("/delete/{propertyId}")
-    public String deleteProperty(@PathVariable Long propertyId) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+    public String deleteProperty(@PathVariable Long propertyId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
             Long userId = userPrincipal.getId();
             propertyService.deleteProperty(userId, propertyId);
             return "redirect:/properties/list";
     }
 
     @GetMapping("/list")
-    public String listProperties(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+    public String listProperties(Model model, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long userId = userPrincipal.getId();
         List<Property> properties = propertyService.getPropertiesByUserId(userId);
         model.addAttribute("properties", properties);
@@ -103,6 +99,7 @@ public class PropertyController {
     @PostMapping("/edit")
     public String editProperty(
             @ModelAttribute("propertyEditingDTO") @Valid PropertyResponseDTO propertyEditingDTO,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ){
@@ -110,8 +107,6 @@ public class PropertyController {
             return "properties/edit";
         }
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
             Long userId = userPrincipal.getId();
             propertyService.updateProperty(userId, propertyEditingDTO);
         } catch (IllegalArgumentException e) {

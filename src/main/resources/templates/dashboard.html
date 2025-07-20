@@ -22,7 +22,7 @@
                     <a class="nav-link" th:href="@{/bookings/list}">Your bookings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:if="${username}" th:text="${username}"> </a>
+                    <a class="nav-link" th:href="@{/users/profile}" th:if="${username}" th:text="${username}"> </a>
                 </li>
             </ul>
         </div>

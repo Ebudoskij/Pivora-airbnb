@@ -7,17 +7,24 @@ import jakarta.validation.Valid;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 
+import org.ebudoskyi.houserent.dto.UserProfileDTO;
 import org.ebudoskyi.houserent.model.CurrencyRates;
+import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.service.CurrencyRatesApiServices.CurrencyRatesService;
 import org.ebudoskyi.houserent.service.JWTCookiesService;
+import org.ebudoskyi.houserent.service.UserProfileImagesService;
 import org.ebudoskyi.houserent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
@@ -28,12 +35,17 @@ public class UserController {
     private final UserService userService;
     private final JWTCookiesService jwtCookiesService;
     private final CurrencyRatesService currencyRatesService;
+    private final UserProfileImagesService userProfileImagesService;
 
     @Autowired
-    public UserController(UserService userService, JWTCookiesService jwtCookiesService, CurrencyRatesService currencyRatesService) {
+    public UserController(UserService userService,
+                          JWTCookiesService jwtCookiesService,
+                          CurrencyRatesService currencyRatesService,
+                          UserProfileImagesService userProfileImagesService) {
         this.userService = userService;
         this.jwtCookiesService = jwtCookiesService;
         this.currencyRatesService = currencyRatesService;
+        this.userProfileImagesService = userProfileImagesService;
     }
 
     @GetMapping("/register")
@@ -114,6 +126,23 @@ public class UserController {
         new SecurityContextLogoutHandler().logout(request, response, null);
         redirectAttributes.addFlashAttribute("signatureError", "Please login again");
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/profile")
+    public String showUserProfile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+        Long userId = userPrincipal.getId();
+        UserProfileDTO userInfo = userService.getUserInfo(userId);
+        model.addAttribute("userInfo", userInfo);
+        return "users/profile";
+    }
+    @PostMapping("/profile/uploadImg")
+    public String uploadProfilePicture(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam ("profilePicture") MultipartFile file)
+    {
+        Long userId = userPrincipal.getId();
+        userProfileImagesService.uploadImage(userId, file);
+        return "redirect:/users/profile";
     }
 }
 

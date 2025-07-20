@@ -2,60 +2,45 @@ package org.ebudoskyi.houserent.mapper;
 
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
-import org.ebudoskyi.houserent.dto.UserResponseDTO;
+import org.ebudoskyi.houserent.dto.UserProfileDTO;
 import org.ebudoskyi.houserent.model.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
 
-    public UserResponseDTO toDTO(User user) {
+    public UserProfileDTO toDTO(User user) {
         if (user == null) {
             return null;
         }
-        UserResponseDTO userDTO = new UserResponseDTO(user.getId(), user.getName(), user.getEmail());
+        UserProfileDTO userDTO = new UserProfileDTO(user.getName(), user.getEmail());
+        if (user.getProfileImage() != null) {
+            userDTO.setProfileImage(Base64.getEncoder().encodeToString(user.getProfileImage().getData()));
+        }
         if (user.getOwnedProperties() != null) {
-            List<Long> propertyIds = user.getOwnedProperties().stream()
-                    .map(Property::getId)
-                    .toList();
-            userDTO.setOwnedProperties(propertyIds);
+            int propertyCount = user.getOwnedProperties().size();
+            userDTO.setPropertyCount(propertyCount);
         }
         if (user.getBookings() != null) {
-            List<Long> bookingIds = user.getBookings().stream()
-                    .map(Booking::getId)
-                    .toList();
-            userDTO.setBookings(bookingIds);
+            int bookingCount = user.getBookings().size();
+            userDTO.setBookingCount(bookingCount);
         }
         if (user.getReviews() != null) {
-            List<Long> reviewIds = user.getReviews().stream()
-                    .map(Review::getId)
-                    .toList();
-            userDTO.setReviews(reviewIds);
-        }
-        if (user.getSentMessages() != null) {
-            List<Long> messageIds = user.getSentMessages().stream()
-                    .map(Message::getId)
-                    .toList();
-            userDTO.setBookings(messageIds);
-        }
-        if (user.getReceivedMessages() != null) {
-            List<Long> messageIds = user.getReceivedMessages().stream()
-                    .map(Message::getId)
-                    .toList();
-            userDTO.setReceivedMessages(messageIds);
+            int reviewCount = user.getReviews().size();
+            userDTO.setReviewCount(reviewCount);
         }
         return userDTO;
     }
 
-    public User toEntity(UserResponseDTO userDTO) {
+    public User toEntity(UserProfileDTO userDTO) {
         if (userDTO == null) {
             return null;
         }
         User user = new User();
-        user.setId(userDTO.getId());
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
         return user;
@@ -84,7 +69,7 @@ public class UserMapper {
 
 
 
-    public List<UserResponseDTO> toDTOList(List<User> users) {
+    public List<UserProfileDTO> toDTOList(List<User> users) {
         if (users == null) {
             return null;
         }
@@ -92,7 +77,7 @@ public class UserMapper {
         return users.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public List<User>  toEntityList(List<UserResponseDTO> userDTOs) {
+    public List<User>  toEntityList(List<UserProfileDTO> userDTOs) {
         if (userDTOs == null) {
             return null;
         }

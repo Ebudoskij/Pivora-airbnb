@@ -44,9 +44,15 @@ public class GlobalExceptionHandler {
         return "redirect:/users/force-logout";
     }
 
+    @ExceptionHandler(IllegalProfilePictureException.class)
+    public String handleIllegalProfilePictureException(Exception e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", e.getMessage());
+        return "redirect:/users/profile";
+    }
+
     @ExceptionHandler(Exception.class)
     public String handleGenericException(Exception e, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("error", "Oops, an unexpected error occurred. Please try again later.");
+        redirectAttributes.addFlashAttribute("error", "Oops, an unexpected error occurred: " + e.getMessage());
         return "redirect:/";
     }
 }

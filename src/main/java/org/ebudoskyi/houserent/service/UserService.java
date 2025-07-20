@@ -1,7 +1,9 @@
 package org.ebudoskyi.houserent.service;
 
+import org.ebudoskyi.houserent.Exceptions.CustomExceptions.UserNotFoundException;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
+import org.ebudoskyi.houserent.dto.UserProfileDTO;
 import org.ebudoskyi.houserent.mapper.UserMapper;
 import org.ebudoskyi.houserent.model.Message;
 import org.ebudoskyi.houserent.model.Property;
@@ -16,6 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +72,6 @@ public class UserService{
 
             return Optional.of(token);
         } catch (AuthenticationException ex) {
-
             return Optional.empty();
         }
     }
@@ -102,5 +104,12 @@ public class UserService{
         userLoginDTO.setEmail(userRegisterDTO.getEmail());
         userLoginDTO.setPassword(userRegisterDTO.getPassword());
         return Optional.of(userLoginDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public UserProfileDTO getUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+        return userMapper.toDTO(user);
     }
 }

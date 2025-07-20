@@ -1,44 +1,54 @@
-<!DOCTYPE html>
-<html lang="uk">
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My listings</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-    <link th:href="@{/css/properties/list.css}" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/users/profile.css">
 </head>
 <body>
 <nav class="navbar">
-        <a class="navbar-brand" th:href="@{/}">Pivora</a>
+    <a class="navbar-brand" th:href="@{/}">
+        Pivora
+    </a>
 </nav>
+
 <div id="flashMessage" th:if="${error}" class="flash-message">
     <span th:text="${error}"></span>
 </div>
-<div class="property-list">
-    <h2>Your listings</h2>
 
-    <div th:if="${properties.isEmpty()}">
-        <p>You haven`t created any listing yet</p>
-    </div>
-
-    <div th:each="property : ${properties}" class="property-desc">
-        <div th:object="${property}">
-            <h3 th:text="*{title}">Title</h3>
-            <p><strong>Description:</strong> <span th:text="*{description}">description</span></p>
-            <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
-            <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}">0</span> грн</p>
-            <form th:action="@{/properties/delete/{propertyId}(propertyId=*{id})}" method="post" onsubmit="return confirm('Are sure about deleting this listing?')">
-                <button type="submit" class="delete-button">
-                    Delete
-                </button>
-            </form>
-            <a th:href="@{/properties/edit/{propertyId}(propertyId=*{id})}">
-                <button type="button" class="edit-button">Edit</button>
-            </a>
+<div class="main-container">
+    <div class="main-section profile-container">
+        <div class="profile-header">
+            <div class="name-email-container">
+                <div class="profile-name" th:if="${userInfo}" th:text="${userInfo.getName()}"></div>
+                <div class="profile-email" th:if="${userInfo}" th:text="${userInfo.getEmail()}"></div>
+            </div>
+            <div class="profile-picture-container">
+                <img class="profile-img" th:if="${userInfo}" th:src="'data:image/jpeg;base64,' + ${userInfo.getProfileImage()}" alt="Profile picture"/>
+                <a class="form-button" th:href="@{/users/edit-profile}">Edit profile</a>
+            </div>
+        </div>
+        <div class="profile-details">
+            <div>
+                <span>Properties owned: </span>
+                <a th:href="@{/properties/list}" th:text="${userInfo.getPropertyCount()}"></a>
+            </div>
+            <div>
+                <span>Bookings created: </span>
+                <a th:href="@{/bookings/list}" th:text="${userInfo.getBookingCount()}"></a>
+            </div>
+            <div>
+                <span>Reviews written: </span>
+                <a href="#" th:text="${userInfo.getReviewCount()}"></a>
+            </div>
         </div>
     </div>
 </div>
+
 <footer>
     <hr>
     <div class="links-container">
