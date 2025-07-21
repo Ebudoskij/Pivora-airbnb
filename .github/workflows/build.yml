@@ -1,0 +1,28 @@
+name: Build and Run Spring Boot App
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set environment variable from GitHub Secret
+        run: echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
+
+      - name: Build project with Maven
+        run: mvn clean package
+
+      - name: Run Spring Boot application
+        run: java -jar target/*.jar
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
