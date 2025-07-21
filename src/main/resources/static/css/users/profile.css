@@ -3,6 +3,11 @@
     flex-direction: column;
     color: var(--light-bg)
 }
+.profile-container form{
+    display: flex;
+    flex-direction: column;
+    color: var(--light-bg)
+}
 .profile-header{
     display: flex;
     flex-direction: row;
@@ -26,7 +31,7 @@
     padding: 20px;
 }
 
-.profile-picture-container img{
+.profile-img{
     border-radius: 100%;
     width:200px;
 }

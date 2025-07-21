@@ -5,8 +5,7 @@ target/
 !**/src/test/**/target/
 
 # Ignore config files
-/src/main/resources/application.properties
-
+.env
 
 ### STS ###
 .apt_generated

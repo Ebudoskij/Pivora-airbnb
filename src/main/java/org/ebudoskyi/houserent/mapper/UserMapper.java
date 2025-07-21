@@ -1,5 +1,6 @@
 package org.ebudoskyi.houserent.mapper;
 
+import org.ebudoskyi.houserent.dto.UserEditProfileDTO;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.dto.UserProfileDTO;

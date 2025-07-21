@@ -1,10 +1,10 @@
 package org.ebudoskyi.houserent.service.CurrencyRatesApiServices;
 
-import org.ebudoskyi.houserent.Configuration.CurrencyRateApiConfig;
 import org.ebudoskyi.houserent.model.CurrencyRates;
 import org.ebudoskyi.houserent.repository.CurrencyRatesRepository;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.*;
 import okhttp3.Request;
@@ -20,12 +20,14 @@ import java.util.stream.Collectors;
 public class CurrencyRatesService {
     private final CurrencyRatesRepository currencyRatesRepository;
     private  final static OkHttpClient client = new OkHttpClient();
-    private final CurrencyRateApiConfig config;
+    @Value("${currency.api.key}")
+    private String apiKey;
+    @Value("${currency.api.url}")
+    private String apiBaseUrl;
 
     @Autowired
-    public CurrencyRatesService(CurrencyRatesRepository currencyRatesRepository, CurrencyRateApiConfig config) {
+    public CurrencyRatesService(CurrencyRatesRepository currencyRatesRepository) {
         this.currencyRatesRepository = currencyRatesRepository;
-        this.config = config;
     }
 
     public CurrencyRates getCurrencyRates(String currency) {
@@ -35,7 +37,7 @@ public class CurrencyRatesService {
     }
 
     public void updateRatesFromApi(){
-        String requestUrl = config.getUrl() + config.getKey() + "/latest/UAH";
+        String requestUrl = apiBaseUrl + apiKey + "/latest/UAH";
 
         Request request = new Request.Builder().url(requestUrl).build();
 

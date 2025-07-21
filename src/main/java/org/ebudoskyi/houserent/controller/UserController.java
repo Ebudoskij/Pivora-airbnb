@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.ebudoskyi.houserent.dto.UserEditProfileDTO;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 
@@ -129,19 +130,34 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String showUserProfile(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+    public String showUserProfile(@AuthenticationPrincipal UserPrincipal userPrincipal,Model model) {
         Long userId = userPrincipal.getId();
         UserProfileDTO userInfo = userService.getUserInfo(userId);
         model.addAttribute("userInfo", userInfo);
         return "users/profile";
     }
-    @PostMapping("/profile/uploadImg")
-    public String uploadProfilePicture(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam ("profilePicture") MultipartFile file)
-    {
+    @GetMapping("/edit-profile")
+    public String showEditProfileForm(@AuthenticationPrincipal UserPrincipal userPrincipal ,Model model) {
         Long userId = userPrincipal.getId();
-        userProfileImagesService.uploadImage(userId, file);
+        model.addAttribute("profileImg", userService.getUserInfo(userId).getProfileImage());
+        UserEditProfileDTO userEditProfileDTO = new UserEditProfileDTO(userPrincipal.getName(),userPrincipal.getUsername());
+        model.addAttribute("userEditProfileDTO", userEditProfileDTO);
+        return "users/edit-profile";
+    }
+    @PostMapping("/edit-profile")
+    public String updateUserProfile(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                    @ModelAttribute ("userEditProfileDTO") @Valid UserEditProfileDTO editInfo,
+                                    BindingResult bindingResult)
+    {
+        if (bindingResult.hasErrors()) {
+            return "users/edit-profile";
+        }
+        Long userId = userPrincipal.getId();
+        if(!editInfo.getProfileImage().isEmpty()) {
+            userProfileImagesService.uploadImage(userId, editInfo.getProfileImage());
+        };
+
+        userService.updateUser(userId, editInfo.getName(), editInfo.getEmail(), editInfo.getPassword());
         return "redirect:/users/profile";
     }
 }
