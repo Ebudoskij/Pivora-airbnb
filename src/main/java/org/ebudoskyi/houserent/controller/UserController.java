@@ -119,15 +119,6 @@ public class UserController {
         response.addCookie(jwtCookiesService.createCookie(token.get()));
         return "redirect:/";
     }
-    @GetMapping("/force-logout")
-    public String forceLogout(HttpServletRequest request,
-                              HttpServletResponse response,
-                              RedirectAttributes redirectAttributes)
-    {
-        new SecurityContextLogoutHandler().logout(request, response, null);
-        redirectAttributes.addFlashAttribute("signatureError", "Please login again");
-        return "redirect:/users/login";
-    }
 
     @GetMapping("/profile")
     public String showUserProfile(@AuthenticationPrincipal UserPrincipal userPrincipal,Model model) {
@@ -139,7 +130,7 @@ public class UserController {
     @GetMapping("/edit-profile")
     public String showEditProfileForm(@AuthenticationPrincipal UserPrincipal userPrincipal ,Model model) {
         Long userId = userPrincipal.getId();
-        model.addAttribute("profileImg", userService.getUserInfo(userId).getProfileImage());
+        model.addAttribute("profileImg", userProfileImagesService.getImage(userId));
         UserEditProfileDTO userEditProfileDTO = new UserEditProfileDTO(userPrincipal.getName(),userPrincipal.getUsername());
         model.addAttribute("userEditProfileDTO", userEditProfileDTO);
         return "users/edit-profile";
@@ -159,6 +150,12 @@ public class UserController {
 
         userService.updateUser(userId, editInfo.getName(), editInfo.getEmail(), editInfo.getPassword());
         return "redirect:/users/profile";
+    }
+    @PostMapping("/delete-profile")
+    public String deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal){
+        Long userId = userPrincipal.getId();
+        userService.deleteUserById(userId);
+        return "redirect:/logout";
     }
 }
 

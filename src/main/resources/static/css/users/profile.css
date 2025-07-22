@@ -50,3 +50,6 @@
 .profile-name{
     font-size: 2em;
 }
+#delete-form{
+    width: 100%;
+}

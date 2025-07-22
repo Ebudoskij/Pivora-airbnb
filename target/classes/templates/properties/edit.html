@@ -16,8 +16,20 @@
     <div class="form-header">
         Edit your listing
     </div>
-    <form th:action="@{/properties/edit}" method="POST" th:object="${propertyEditingDTO}">
-        <input type="hidden" th:field="*{id}">
+    <div class="slider">
+        <button class="prev">&#10094</button>
+
+        <div th:if="${propertyImages}" class="slides">
+            <img th:each="image : ${propertyImages}" th:src="${image}" class="property-image" alt="Property photo">
+        </div>
+
+        <button class="next">&#10095</button>
+    </div>
+    <form th:action="@{/properties/edit/{propertyId}(propertyId=${propertyId})}" enctype="multipart/form-data" method="POST" th:object="${propertyEditingDTO}">
+
+        <label for="images">Download new images (under 20MB in summary):</label>
+        <input type="file" id="images" th:field="*{images}" accept="image/*" multiple>
+
         <label for="title">Title</label>
         <input type="text" th:field="*{title}" id="title" placeholder="Enter title of listing" required>
         <p class = "errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"> error </p>
@@ -91,5 +103,49 @@
         <p>&copy; 2025 Pivora. All rights reserved</p>
     </div>
 </footer>
+<script>
+    const slides = document.querySelectorAll('.property-image');
+    console.log(slides);
+    const next = document.querySelector('.next');
+    const prev = document.querySelector('.prev');
+
+    let slideIndex = 0;
+    let intervalId = null;
+
+    function showSlide(index) {
+        if (index >= slides.length) {
+            slideIndex = 0;
+        } else if (index < 0) {
+            slideIndex = slides.length - 1;
+        } else {
+            slideIndex = index;
+        }
+
+        slides.forEach(slide => slide.classList.remove('displaySlide'));
+        if (slides[slideIndex]) {
+            slides[slideIndex].classList.add('displaySlide');
+        }
+    }
+    function nextSlide() {
+        clearInterval(intervalId);
+        slideIndex++;
+        showSlide(slideIndex);
+        intervalId = setInterval(nextSlide, 5000);
+    }
+    function prevSlide() {
+        clearInterval(intervalId);
+        slideIndex--;
+        showSlide(slideIndex);
+        intervalId = setInterval(prevSlide, 5000);
+    }
+
+    if (slides.length > 0) {
+        showSlide(slideIndex);
+        intervalId = setInterval(nextSlide, 5000);
+    }
+
+    if(next) next.addEventListener('click', nextSlide);
+    if(prev) prev.addEventListener('click', prevSlide);
+</script>
 </body>
 </html>

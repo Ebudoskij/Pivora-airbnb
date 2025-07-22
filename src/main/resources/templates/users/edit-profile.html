@@ -21,7 +21,7 @@
             <div class="form-header">
                 Edit profile
             </div>
-            <img class="profile-img" th:if="${userInfo}" th:src="'data:image/jpeg;base64,' + ${profileImg}" alt="Profile picture"/>
+            <img class="profile-img" th:if="${profileImg}" th:src="${profileImg}"/>
             <form method="post" enctype="multipart/form-data" th:action="@{/users/edit-profile}" th:object="${userEditProfileDTO}">
                 <label for="profilePic">Select a new picture</label>
                 <input type="file" id="profilePic" accept="image/*" th:field="*{profileImage}" placeholder="Edit profile image"/>
@@ -42,6 +42,9 @@
                 <label for="password2">Confirm password:</label>
                 <input type="password" id="password2"/>
                 <button type="submit" class="form-button">Submit changes</button>
+            </form>
+            <form method="post" action="/users/delete-profile" id="delete-form">
+                <button type="submit" class="delete-button">Delete profile</button>
             </form>
         </div>
     </div>

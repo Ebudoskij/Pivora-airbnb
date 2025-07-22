@@ -22,8 +22,17 @@
         <p>You haven`t created any listing yet</p>
     </div>
 
-    <div th:each="property : ${properties}" class="property-desc">
-        <div th:object="${property}">
+    <div th:each="property, stat : ${properties}" th:object="${property}" class="property-desc">
+            <div class="slider" th:id="'slider-' + ${stat.index}">
+                <button th:class="'prev prev-' + ${stat.index}">&#10094</button>
+
+                <div th:if="${property.images}" class="slides">
+                    <img th:each="image : ${property.images}" th:src="${image}" th:class="'property-image-' + ${stat.index}" alt="Property photo">
+                </div>
+
+                <button th:class="'next next-' + ${stat.index}">&#10095</button>
+            </div>
+
             <h3 th:text="*{title}">Title</h3>
             <p><strong>Description:</strong> <span th:text="*{description}">description</span></p>
             <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
@@ -36,7 +45,6 @@
             <a th:href="@{/properties/edit/{propertyId}(propertyId=*{id})}">
                 <button type="button" class="edit-button">Edit</button>
             </a>
-        </div>
     </div>
 </div>
 <footer>
@@ -83,5 +91,55 @@
         <p>&copy; 2025 Pivora. All rights reserved</p>
     </div>
 </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sliders = document.querySelectorAll('.slider');
+
+        sliders.forEach((slider, idx) => {
+            const slides = slider.querySelectorAll(`.property-image-${idx}`);
+            const nextBtn = slider.querySelector(`.next-${idx}`);
+            const prevBtn = slider.querySelector(`.prev-${idx}`);
+            let slideIndex = 0;
+            let intervalId = null;
+
+            function showSlide(index) {
+                if (index >= slides.length) {
+                    slideIndex = 0;
+                } else if (index < 0) {
+                    slideIndex = slides.length - 1;
+                } else {
+                    slideIndex = index;
+                }
+
+                slides.forEach(slide => slide.classList.remove('displaySlide'));
+                if (slides[slideIndex]) {
+                    slides[slideIndex].classList.add('displaySlide');
+                }
+            }
+
+            function nextSlide() {
+                clearInterval(intervalId);
+                slideIndex++;
+                showSlide(slideIndex);
+                intervalId = setInterval(nextSlide, 5000);
+            }
+
+            function prevSlide() {
+                clearInterval(intervalId);
+                slideIndex--;
+                showSlide(slideIndex);
+                intervalId = setInterval(nextSlide, 5000);
+            }
+
+            if (slides.length > 0) {
+                showSlide(slideIndex);
+                intervalId = setInterval(nextSlide, 5000);
+            }
+
+            if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+            if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        });
+    });
+</script>
 </body>
 </html>

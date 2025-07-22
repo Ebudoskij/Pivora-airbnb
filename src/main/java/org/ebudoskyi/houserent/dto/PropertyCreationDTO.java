@@ -1,5 +1,6 @@
 package org.ebudoskyi.houserent.dto;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -8,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -28,4 +32,13 @@ public class PropertyCreationDTO {
     @NotNull(message = "price is mandatory")
     @Positive(message="Price must be a positive number!")
     private Double pricePerNight;
+    List<MultipartFile> Images;
+    public PropertyCreationDTO(String title, String description, String city, String location, Integer rooms, Double pricePerNight) {
+        this.title = title;
+        this.description = description;
+        this.city = city;
+        this.location = location;
+        this.rooms = rooms;
+        this.pricePerNight = pricePerNight;
+    }
 }

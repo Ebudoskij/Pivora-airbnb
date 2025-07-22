@@ -1,8 +1,42 @@
-.property-form-container {
-    width: 35%;
-    margin-top: 50px;
-    padding: 25px;
-    background-color: #f4f4f4;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.slider{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.slides img {
+    display: none;
+    width: 100%;
+    object-fit: cover;
+}
+
+.displaySlide {
+    display: block !important;
+}
+.slider button {
+    position: relative;
+    height:100%;
+    font-size: 2em;
+    padding: 10px 15px;
+    background-color: rgba(83, 83, 83, 0.67);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button.prev{
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+button.next{
+    border-top-right-radius:100px;
+    border-bottom-right-radius: 100px;
+}
+
+
+@keyframes fade {
+    from {
+        opacity: 0.6;
+    }
+    to {
+        opacity: 1;
+    }
 }

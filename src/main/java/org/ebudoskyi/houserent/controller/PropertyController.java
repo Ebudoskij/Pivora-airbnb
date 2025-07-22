@@ -4,14 +4,12 @@ import jakarta.validation.Valid;
 import org.ebudoskyi.houserent.dto.PropertyCreationDTO;
 import org.ebudoskyi.houserent.dto.PropertyResponseDTO;
 import org.ebudoskyi.houserent.dto.PropertySearchDTO;
-import org.ebudoskyi.houserent.mapper.PropertyMapper;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.UserPrincipal;
+import org.ebudoskyi.houserent.service.PropertyImagesService;
 import org.ebudoskyi.houserent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +23,12 @@ import java.util.List;
 public class PropertyController {
 
     private final PropertyService propertyService;
-    private final PropertyMapper propertyMapper;
+    private final PropertyImagesService propertyImagesService;
 
     @Autowired
-    public PropertyController(PropertyService propertyService,  PropertyMapper propertyMapper) {
+    public PropertyController(PropertyService propertyService,  PropertyImagesService propertyImagesService) {
         this.propertyService = propertyService;
-        this.propertyMapper = propertyMapper;
+        this.propertyImagesService = propertyImagesService;
     }
 
     @GetMapping("/createProperty")
@@ -49,7 +47,14 @@ public class PropertyController {
             return "properties/create";
         }
             Long userId = userPrincipal.getId();
-            propertyService.createProperty(userId, propertyDTO);
+            Property property = propertyService.createProperty(userId,
+                    propertyDTO.getTitle(),
+                    propertyDTO.getDescription(),
+                    propertyDTO.getCity(),
+                    propertyDTO.getLocation(),
+                    propertyDTO.getPricePerNight(),
+                    propertyDTO.getRooms());
+            propertyImagesService.uploadOrUpdateImages(property.getId(), propertyDTO.getImages());
             return "redirect:/properties/list";
     }
 
@@ -63,7 +68,7 @@ public class PropertyController {
     @GetMapping("/list")
     public String listProperties(Model model, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long userId = userPrincipal.getId();
-        List<Property> properties = propertyService.getPropertiesByUserId(userId);
+        List<PropertyResponseDTO> properties = propertyService.getPropertiesByUserId(userId);
         model.addAttribute("properties", properties);
         return "properties/list";
     }
@@ -91,14 +96,25 @@ public class PropertyController {
     @GetMapping("/edit/{propertyId}")
     public String showEditForm(@PathVariable Long propertyId, Model model) {
         Property property = propertyService.getPropertyById(propertyId);
-        PropertyResponseDTO propertyEditingDTO = propertyMapper.toDTO(property);
+        PropertyCreationDTO propertyEditingDTO = new PropertyCreationDTO(
+                property.getTitle(),
+                property.getDescription(),
+                property.getCity(),
+                property.getLocation(),
+                property.getRooms(),
+                property.getPricePerNight()
+        );
         model.addAttribute("propertyEditingDTO", propertyEditingDTO);
+        List<String> propertyImages = propertyImagesService.getImages(property.getId());
+        model.addAttribute("propertyImages", propertyImages);
+        model.addAttribute("propertyId", propertyId);
         return "properties/edit";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/edit/{propertyId}")
     public String editProperty(
-            @ModelAttribute("propertyEditingDTO") @Valid PropertyResponseDTO propertyEditingDTO,
+            @PathVariable  Long propertyId,
+            @ModelAttribute("propertyEditingDTO") @Valid PropertyCreationDTO propertyEditingDTO,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
@@ -108,7 +124,16 @@ public class PropertyController {
         }
         try {
             Long userId = userPrincipal.getId();
-            propertyService.updateProperty(userId, propertyEditingDTO);
+            propertyService.updateProperty(
+                    userId,
+                    propertyId,
+                    propertyEditingDTO.getTitle(),
+                    propertyEditingDTO.getDescription(),
+                    propertyEditingDTO.getCity(),
+                    propertyEditingDTO.getLocation(),
+                    propertyEditingDTO.getPricePerNight(),
+                    propertyEditingDTO.getRooms());
+            propertyImagesService.uploadOrUpdateImages(propertyId, propertyEditingDTO.getImages());
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("editErrorMsg", e.getMessage());
         }

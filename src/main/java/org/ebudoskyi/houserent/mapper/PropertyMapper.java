@@ -17,44 +17,15 @@ public class PropertyMapper {
         if (property == null) {
             return null;
         }
-        PropertyResponseDTO propertyDTO = new PropertyResponseDTO(
+
+        return new PropertyResponseDTO(
                 property.getId(),
                 property.getTitle(),
                 property.getDescription(),
                 property.getCity(),
                 property.getLocation(),
                 property.getPricePerNight(),
-                property.getRooms(),
-                property.getOwner().getId());
-
-        if (property.getReviews() != null) {
-            List<Long> reviewsIds = property.getReviews().stream()
-                    .map(Review::getId)
-                    .toList();
-            propertyDTO.setReviewsIds(reviewsIds);
-        }
-        if (property.getBookings() != null) {
-            List<Long> bookingIds = property.getBookings().stream()
-                    .map(Booking::getId)
-                    .toList();
-            propertyDTO.setBookingsIds(bookingIds);
-        }
-        return propertyDTO;
-    }
-
-    public Property toEntity(PropertyResponseDTO propertyDTO) {
-        if (propertyDTO == null) {
-            return null;
-        }
-        Property property = new Property();
-        property.setId(propertyDTO.getId());
-        property.setTitle(propertyDTO.getTitle());
-        property.setDescription(propertyDTO.getDescription());
-        property.setCity(propertyDTO.getCity());
-        property.setLocation(propertyDTO.getLocation());
-        property.setPricePerNight(propertyDTO.getPricePerNight());
-        property.setRooms(propertyDTO.getRooms());
-        return property;
+                property.getRooms());
     }
 
     public Property ToEntity(PropertyCreationDTO  propertyCreationDTO) {
@@ -77,11 +48,5 @@ public class PropertyMapper {
         }
 
         return properties.stream().map(this::toDTO).collect(Collectors.toList());
-    }
-    public List<Property>  toEntityList(List<PropertyResponseDTO> properties) {
-        if (properties == null) {
-            return null;
-        }
-        return properties.stream().map(this::toEntity).collect(Collectors.toList());
     }
 }

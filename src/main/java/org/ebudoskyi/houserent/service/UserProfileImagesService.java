@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 
 @Service
 public class UserProfileImagesService {
@@ -43,5 +44,11 @@ public class UserProfileImagesService {
             throw new IllegalProfilePictureException("An error occurred while uploading profile picture");
         }
         userProfileImagesRepository.save(userProfileImages);
+    }
+
+    public String getImage(Long userId) {
+        return userProfileImagesRepository.findByUserId(userId)
+                .map(image -> "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(image.getData()))
+                .orElse(null);
     }
 }

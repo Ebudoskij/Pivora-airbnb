@@ -45,6 +45,9 @@ public class Property {
     @Column(nullable = false)
     private int rooms;
 
+    @OneToMany(mappedBy = "property",  cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PropertyImage> images = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "owner_id", nullable = false)
