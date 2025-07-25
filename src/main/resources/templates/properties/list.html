@@ -24,13 +24,13 @@
 
     <div th:each="property, stat : ${properties}" th:object="${property}" class="property-desc">
             <div class="slider" th:id="'slider-' + ${stat.index}">
-                <button th:class="'prev prev-' + ${stat.index}">&#10094</button>
+                <button th:if="${property.images.size() != 0}" th:class="'prev prev-' + ${stat.index}">&#10094</button>
 
-                <div th:if="${property.images}" class="slides">
+                <div class="slides">
                     <img th:each="image : ${property.images}" th:src="${image}" th:class="'property-image-' + ${stat.index}" alt="Property photo">
                 </div>
 
-                <button th:class="'next next-' + ${stat.index}">&#10095</button>
+                <button th:if="${property.images.size() != 0}" th:class="'next next-' + ${stat.index}">&#10095</button>
             </div>
 
             <h3 th:text="*{title}">Title</h3>

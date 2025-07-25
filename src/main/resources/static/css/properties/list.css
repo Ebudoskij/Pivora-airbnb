@@ -24,7 +24,7 @@
 .property-desc form{
     display: inline-block;
 }
-.property-desc button{
+.property-desc .edit-button, .delete-button {
     margin-right: 20px;
     margin-top: 20px;
     font-size: 1.3em;
@@ -46,47 +46,4 @@
 
 .edit-button:active{
     background-color: rgba(39, 174, 96, 0.8);
-}
-
-.slider{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-.slides img {
-    display: none;
-    width: 100%;
-    object-fit: cover;
-}
-
-.displaySlide {
-    display: block !important;
-}
-.slider button {
-    position: relative;
-    height:100%;
-    font-size: 2em;
-    padding: 10px 15px;
-    background-color: rgba(83, 83, 83, 0.67);
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-button.prev{
-    border-top-left-radius: 100px;
-    border-bottom-left-radius: 100px;
-}
-button.next{
-    border-top-right-radius:100px;
-    border-bottom-right-radius: 100px;
-}
-
-
-@keyframes fade {
-    from {
-        opacity: 0.6;
-    }
-    to {
-        opacity: 1;
-    }
 }

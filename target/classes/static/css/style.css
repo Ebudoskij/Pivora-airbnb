@@ -437,6 +437,57 @@ body {
     background-color: rgba(44, 62, 80, 0.9);
 }
 
+.slider{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.slides {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+.slides img {
+    display: none;
+    max-width: 80%;
+}
+
+.slider img.displaySlide {
+    display: block;
+}
+.slider button {
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 2rem;
+    height: 100%;
+    margin: 0;
+    background-color: rgba(83, 83, 83, 0.67);
+    text-align: center;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.slider button.prev{
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+.slider button.next{
+    border-top-right-radius:100px;
+    border-bottom-right-radius: 100px;
+}
+
+
+@keyframes fade {
+    from {
+        opacity: 0.6;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 footer {
     background-color: var(--dark-bg);
     color: white;
