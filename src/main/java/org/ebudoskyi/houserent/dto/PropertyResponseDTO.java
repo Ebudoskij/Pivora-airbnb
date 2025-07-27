@@ -19,6 +19,7 @@ public class PropertyResponseDTO {
     private double pricePerNight;
     private int rooms;
     private List<String>  images;
+    private String phoneNumber;
     public PropertyResponseDTO(Long id, String title, String description, String city, String location, double pricePerNight, int rooms) {
         this.id = id;
         this.title = title;

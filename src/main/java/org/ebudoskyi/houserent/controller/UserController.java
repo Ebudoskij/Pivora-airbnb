@@ -131,7 +131,7 @@ public class UserController {
     public String showEditProfileForm(@AuthenticationPrincipal UserPrincipal userPrincipal ,Model model) {
         Long userId = userPrincipal.getId();
         model.addAttribute("profileImg", userProfileImagesService.getImage(userId));
-        UserEditProfileDTO userEditProfileDTO = new UserEditProfileDTO(userPrincipal.getName(),userPrincipal.getUsername());
+        UserEditProfileDTO userEditProfileDTO = userService.getUserEditInfo(userId);
         model.addAttribute("userEditProfileDTO", userEditProfileDTO);
         return "users/edit-profile";
     }
@@ -148,7 +148,7 @@ public class UserController {
             userProfileImagesService.uploadImage(userId, editInfo.getProfileImage());
         };
 
-        userService.updateUser(userId, editInfo.getName(), editInfo.getEmail(), editInfo.getPassword());
+        userService.updateUser(userId, editInfo.getName(), editInfo.getEmail(), editInfo.getPassword(), editInfo.getPhoneNumber());
         return "redirect:/users/profile";
     }
     @PostMapping("/delete-profile")

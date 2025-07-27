@@ -15,18 +15,28 @@
 
 <div class="property-list">
     <h2>Available listings</h2>
-    <div th:each="property : ${properties}" class="property-desc">
-        <div th:object="${property}">
-            <h3 th:text="*{title}">Title</h3>
-            <p><strong>Description:</strong> <span th:text="*{description}">Опис</span></p>
-            <p><strong>City:</strong> <span th:text="*{city}">City</span></p>
-            <p><strong>Location:</strong> <span th:text="*{location}">Location</span></p>
-            <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
-            <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}">0</span> грн</p>
-            <a th:href="@{/bookings/create/{propertyId}(propertyId=*{id})}">
-                <button type="button" class="edit-button">Book now</button>
-            </a>
+    <div th:each="property, stat : ${properties}" th:object="${property}" class="property-desc">
+
+        <div class="slider" th:id="'slider-' + ${stat.index}">
+            <button th:if="${property.images.size() != 0}" th:class="'prev prev-' + ${stat.index}">&#10094</button>
+
+            <div class="slides">
+                <img th:each="image : ${property.images}" th:src="${image}" th:class="'property-image-' + ${stat.index}" alt="Property photo">
+            </div>
+
+            <button th:if="${property.images.size() != 0}" th:class="'next next-' + ${stat.index}">&#10095</button>
         </div>
+
+        <h2 th:text="*{title}">Title</h2>
+        <p th:if="*{description}"><strong>Description:</strong> <span th:text="*{description}"></span></p>
+        <p><strong>City:</strong> <span th:text="*{city}">City</span></p>
+        <p th:if="*{location}"><strong>Location:</strong> <span th:text="*{location}"></span></p>
+        <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}"></span></p>
+        <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}"></span> грн</p>
+        <p th:if="*{phoneNumber}"><strong>Host`s phone number:</strong> <span th:text="*{phoneNumber}"></span></p>
+        <a th:href="@{/bookings/create/{propertyId}(propertyId=*{id})}">
+            <button type="button" class="edit-button">Book now</button>
+        </a>
     </div>
 </div>
 <footer>
@@ -73,5 +83,7 @@
         <p>&copy; 2025 Pivora. All rights reserved</p>
     </div>
 </footer>
+<script th:src="@{/js/slider.js}">
+</script>
 </body>
 </html>

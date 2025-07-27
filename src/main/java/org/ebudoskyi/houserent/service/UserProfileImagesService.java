@@ -46,6 +46,7 @@ public class UserProfileImagesService {
         userProfileImagesRepository.save(userProfileImages);
     }
 
+    @Transactional
     public String getImage(Long userId) {
         return userProfileImagesRepository.findByUserId(userId)
                 .map(image -> "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(image.getData()))

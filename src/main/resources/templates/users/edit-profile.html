@@ -33,7 +33,9 @@
 
                 <label for="email">Email:</label>
                 <input type="email" id="email" th:field="*{email}" readonly/>
-                <p class = "errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"> error </p>
+
+                <label for="phoneNumber">Phone number in format (+XXX-XX-XXXXXXX):</label>
+                <input type="tel" id="phoneNumber" th:field="*{phoneNumber}"/>
 
                 <label for="password1">Change Password:</label>
                 <input type="password" id="password1" th:field="*{password}"/>

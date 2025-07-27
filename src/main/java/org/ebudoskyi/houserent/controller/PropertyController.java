@@ -73,25 +73,19 @@ public class PropertyController {
         return "properties/list";
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public String searchProperties(
             @Valid @ModelAttribute("searchDTO") PropertySearchDTO searchDTO,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+            Model model
     ) {
         if (bindingResult.hasErrors()) {
             return "dashboard";
         }
-            List<Property> availableProperties = propertyService.getAvailableProperties(searchDTO);
-            redirectAttributes.addFlashAttribute("properties", availableProperties);
-            return "redirect:/properties/search";
+            List<PropertyResponseDTO> availableProperties = propertyService.getAvailableProperties(searchDTO);
+            model.addAttribute("properties", availableProperties);
+            return "/properties/search";
     }
-
-    @GetMapping("/search")
-    public String searchProperties(){
-        return "properties/search";
-    }
-
 
     @GetMapping("/edit/{propertyId}")
     public String showEditForm(@PathVariable Long propertyId, Model model) {

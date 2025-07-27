@@ -33,8 +33,9 @@
                 <button th:if="${property.images.size() != 0}" th:class="'next next-' + ${stat.index}">&#10095</button>
             </div>
 
-            <h3 th:text="*{title}">Title</h3>
+            <h2 th:text="*{title}">Title</h2>
             <p><strong>Description:</strong> <span th:text="*{description}">description</span></p>
+            <p><strong>City:</strong> <span th:text="|*{city}, *{location}|"> </span></p>
             <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
             <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}">0</span> грн</p>
             <form th:action="@{/properties/delete/{propertyId}(propertyId=*{id})}" method="post" onsubmit="return confirm('Are sure about deleting this listing?')">
@@ -91,55 +92,7 @@
         <p>&copy; 2025 Pivora. All rights reserved</p>
     </div>
 </footer>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const sliders = document.querySelectorAll('.slider');
-
-        sliders.forEach((slider, idx) => {
-            const slides = slider.querySelectorAll(`.property-image-${idx}`);
-            const nextBtn = slider.querySelector(`.next-${idx}`);
-            const prevBtn = slider.querySelector(`.prev-${idx}`);
-            let slideIndex = 0;
-            let intervalId = null;
-
-            function showSlide(index) {
-                if (index >= slides.length) {
-                    slideIndex = 0;
-                } else if (index < 0) {
-                    slideIndex = slides.length - 1;
-                } else {
-                    slideIndex = index;
-                }
-
-                slides.forEach(slide => slide.classList.remove('displaySlide'));
-                if (slides[slideIndex]) {
-                    slides[slideIndex].classList.add('displaySlide');
-                }
-            }
-
-            function nextSlide() {
-                clearInterval(intervalId);
-                slideIndex++;
-                showSlide(slideIndex);
-                intervalId = setInterval(nextSlide, 5000);
-            }
-
-            function prevSlide() {
-                clearInterval(intervalId);
-                slideIndex--;
-                showSlide(slideIndex);
-                intervalId = setInterval(nextSlide, 5000);
-            }
-
-            if (slides.length > 0) {
-                showSlide(slideIndex);
-                intervalId = setInterval(nextSlide, 5000);
-            }
-
-            if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-            if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-        });
-    });
+<script th:src="@{/js/slider.js}">
 </script>
 </body>
 </html>

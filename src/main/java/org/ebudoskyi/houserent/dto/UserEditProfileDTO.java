@@ -22,8 +22,11 @@ public class UserEditProfileDTO {
             message = "Password must be at least 8 characters long, including one uppercase letter, one digit, and one special character (!@#$%^&*)")
     private String password;
     private MultipartFile profileImage = null;
-    public UserEditProfileDTO(String name, String email) {
+    @Pattern(regexp = "^$|^\\+\\d{1,4}\\s*\\d{1,5}\\s*\\d{4,10}$", message = "Wrong input format")
+    private String phoneNumber;
+    public UserEditProfileDTO(String name, String email, String phoneNumber) {
         this.name = name;
         this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 }

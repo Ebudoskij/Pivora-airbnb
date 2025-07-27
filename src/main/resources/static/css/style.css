@@ -204,14 +204,16 @@ body {
 
 .form-container {
     border-radius: var(--border-radius);
-    padding-right: 50px;
-    padding-left: 50px;
+    padding: 30px;
     min-width: 400px;
     width: 35%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     color: var(--secondary-color);
     display: flex;
     flex-direction: column;
+    align-items: center;
+    margin: 50px auto;
+    background-color: white;
 }
 .form-container img {
     margin-bottom: 20px;
@@ -363,15 +365,6 @@ body {
     text-decoration: underline;
 }
 
-.form-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-}
-
 .form-container h2 {
     margin-bottom: 30px;
     text-align: center;
@@ -443,19 +436,24 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
 }
 .slides {
     overflow: hidden;
     display: flex;
     justify-content: center;
+    border-radius: 10px;
 }
 .slides img {
     display: none;
-    max-width: 80%;
+    min-height: 500px;;
 }
 
 .slider img.displaySlide {
     display: block;
+    animation-name: fade;
+    animation-duration: 1s;
+
 }
 .slider button {
     padding: 10px 15px;
@@ -468,6 +466,13 @@ body {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s;
+}
+.slider button:hover{
+    background-color: rgba(83, 83, 83, 0.55);
+}
+.slider button:active{
+    background-color: rgba(83, 83, 83, 0.4);
 }
 .slider button.prev{
     border-top-left-radius: 100px;

@@ -3,6 +3,7 @@ package org.ebudoskyi.houserent.service;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import org.ebudoskyi.houserent.Exceptions.CustomExceptions.UserNotFoundException;
+import org.ebudoskyi.houserent.dto.UserEditProfileDTO;
 import org.ebudoskyi.houserent.dto.UserLoginDTO;
 import org.ebudoskyi.houserent.dto.UserRegisterDTO;
 import org.ebudoskyi.houserent.dto.UserProfileDTO;
@@ -115,13 +116,22 @@ public class UserService{
         return userMapper.toDTO(user);
     }
 
-    public void updateUser(Long userId, String name, String email, String password) {
+    public UserEditProfileDTO getUserEditInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+        return new UserEditProfileDTO(user.getName(), user.getEmail(), user.getPhoneNumber());
+    }
+
+    public void updateUser(Long userId, String name, String email, String password, String phoneNumber) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
         user.setName(name);
         user.setEmail(email);
         if (!password.isBlank()) {
             user.setPassword(bCryptPasswordEncoder.encode(password));
+        }
+        if (!phoneNumber.isBlank()) {
+            user.setPhoneNumber(phoneNumber);
         }
         userRepository.save(user);
     }
