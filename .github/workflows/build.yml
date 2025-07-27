@@ -1,0 +1,51 @@
+name: Build and Run Spring Boot App
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: Accomodation-rent
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1506
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set environment variable from GitHub Secret
+        run: echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
+
+      - name: Wait for PostgreSQL to start
+        run: |
+          echo "Waiting for PostgreSQL to be ready..."
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 && break
+            sleep 1
+          done
+
+      - name: Build project with Maven
+        run: mvn clean package
+
+      - name: Run Spring Boot application
+        run: java -jar target/*.jar
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
