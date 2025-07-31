@@ -56,6 +56,7 @@
 
                 <form th:action="@{/properties/search}" th:object="${searchDTO}" method="GET">
 
+<<<<<<< HEAD
                     <label for="city">City</label>
                     <select th:if="${AvailableCities}" id="city" th:field="*{city}">
                         <option th:each="cityName : ${AvailableCities}" th:text="${cityName}" th:value="${cityName}"></option>
@@ -64,6 +65,24 @@
 
                     <label for="check-in-date">Check-in</label>
                     <input type="date" id="check-in-date" th:field="*{startDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
+=======
+                    <div th:if="${AvailableCities != null and !#lists.isEmpty(AvailableCities)}">
+                        <label for="citySelect">City</label>
+                        <select id="citySelect" th:field="*{city}">
+                            <option th:each="city : ${AvailableCities}" th:value="${city}" th:text="${city}"></option>
+                        </select>
+                    </div>
+
+                    <div th:if="${AvailableCities == null or #lists.isEmpty(AvailableCities)}">
+                        <label for="cityInput">City</label>
+                        <input type="text" id="cityInput" th:field="*{city}" />
+                    </div>
+
+                    <p class = "errors" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> error </p>
+
+                    <label for="check-in-date">Check-in</label>
+                    <input type="date" id="check-in-date" th:field="*{startDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"/>
+>>>>>>> citySelection
                     <p class = "errors" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"> error </p>
 
                     <label for="check-out-date">Check-out</label>

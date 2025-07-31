@@ -95,6 +95,7 @@ body {
     white-space: normal;
 }
 
+
 .main-container {
     background-color: var(--dark-bg);
     color: white;
@@ -248,7 +249,10 @@ body {
 }
 
 .form-container input, select {
+<<<<<<< HEAD
     font-size: 1.2rem;
+=======
+>>>>>>> citySelection
     width: 100%;
     padding: 15px;
     border: 1px solid #e1e1e1;
@@ -270,6 +274,7 @@ body {
 .errors {
     font-weight: 500;
     margin-bottom: 5px;
+    margin-top: 0;
     color: red;
 }
 

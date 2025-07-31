@@ -95,6 +95,7 @@ body {
     white-space: normal;
 }
 
+
 .main-container {
     background-color: var(--dark-bg);
     color: white;
@@ -248,12 +249,12 @@ body {
 }
 
 .form-container input, select {
-    font-size: 1.2rem;
     width: 100%;
     padding: 15px;
     border: 1px solid #e1e1e1;
     border-radius: var(--border-radius);
     margin-bottom: 15px;
+    font-size: 16px;
     font-family: 'Roboto', 'Arial', sans-serif;
 }
 .form-container input[readonly]{
@@ -270,6 +271,7 @@ body {
 .errors {
     font-weight: 500;
     margin-bottom: 5px;
+    margin-top: 0;
     color: red;
 }
 
@@ -423,6 +425,17 @@ body {
 .delete-button{
     background-color: var(--dark-bg);
     width: 100%;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
 }
 .delete-button:hover{
     background-color: rgba(44, 62, 80, 0.95);
