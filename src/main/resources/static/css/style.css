@@ -425,17 +425,6 @@ body {
 .delete-button{
     background-color: var(--dark-bg);
     width: 100%;
-    color: white;
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
 }
 .delete-button:hover{
     background-color: rgba(44, 62, 80, 0.95);

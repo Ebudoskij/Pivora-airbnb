@@ -42,7 +42,7 @@ public class HomeAndErrorController {
 
             if (principal instanceof UserPrincipal userPrincipal) {
                 if (!userPrincipal.getUsername().isBlank()) {
-                    model.addAttribute("username", "Welcome, " + userPrincipal.getName() + "!");
+                    model.addAttribute("username", userPrincipal.getName());
                 }
             }
         }

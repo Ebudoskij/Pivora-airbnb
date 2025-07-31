@@ -32,7 +32,7 @@
             <p><strong>Total:</strong> <span th:text="*{totalPrice}">0</span> hryvnas</p>
 
             <form th:action="@{/bookings/delete/{bookingId}(bookingId=*{id})}" onsubmit="return confirm('Are you sure about canceling this booking?')" method="post">
-                <button type="submit" class="delete-button">
+                <button type="submit" class="form-button delete-button">
                     Cancel
                 </button>
             </form>
