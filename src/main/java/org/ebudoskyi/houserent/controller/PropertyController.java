@@ -77,10 +77,13 @@ public class PropertyController {
     public String searchProperties(
             @Valid @ModelAttribute("searchDTO") PropertySearchDTO searchDTO,
             BindingResult bindingResult,
-            Model model
+            Model model,
+            RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
-            return "dashboard";
+            redirectAttributes.addFlashAttribute("searchDTO", searchDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.searchDTO", bindingResult);
+            return "redirect:/";
         }
             List<PropertyResponseDTO> availableProperties = propertyService.getAvailableProperties(searchDTO);
             model.addAttribute("properties", availableProperties);

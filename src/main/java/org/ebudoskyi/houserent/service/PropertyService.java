@@ -116,4 +116,7 @@ public class PropertyService {
         propertyRepository.delete(property);
     }
 
+    public List<String> getAvailableCities() {
+        return propertyRepository.getCities().orElse(null);
+    }
 }

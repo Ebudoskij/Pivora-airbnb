@@ -5,6 +5,7 @@ import org.ebudoskyi.houserent.dto.PropertySearchDTO;
 import org.ebudoskyi.houserent.model.CurrencyRates;
 import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.service.CurrencyRatesApiServices.CurrencyRatesService;
+import org.ebudoskyi.houserent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,14 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class HomeAndErrorController {
 
     private final CurrencyRatesService currencyRatesService;
+    private final PropertyService propertyService;
 
     @Autowired
-    public HomeAndErrorController(CurrencyRatesService currencyRatesService) {
+    public HomeAndErrorController(CurrencyRatesService currencyRatesService, PropertyService propertyService) {
         this.currencyRatesService = currencyRatesService;
+        this.propertyService = propertyService;
     }
 
     @GetMapping("/")
@@ -43,6 +48,8 @@ public class HomeAndErrorController {
         }
         CurrencyRates currencyRates = currencyRatesService.getCurrencyRates("UAH");
         model.addAttribute("currencyRates", currencyRates);
+        List<String> AvailableCities = propertyService.getAvailableCities();
+        model.addAttribute("AvailableCities", AvailableCities);
         return "dashboard";
     }
 

@@ -76,6 +76,10 @@ body {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
+
+    max-width: 80%;
+    width: fit-content;
+
     background-color: #f44336;
     color: white;
     padding: 16px 24px;
@@ -84,7 +88,13 @@ body {
     opacity: 1;
     transition: opacity 1s ease-out;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
+
 
 .main-container {
     background-color: var(--dark-bg);
@@ -215,6 +225,9 @@ body {
     margin: 50px auto;
     background-color: white;
 }
+.form-container form{
+    width: 100%;
+}
 .form-container img {
     margin-bottom: 20px;
 }
@@ -235,7 +248,7 @@ body {
     font-size: 1rem;
 }
 
-.form-container input {
+.form-container input, select {
     width: 100%;
     padding: 15px;
     border: 1px solid #e1e1e1;
@@ -258,6 +271,7 @@ body {
 .errors {
     font-weight: 500;
     margin-bottom: 5px;
+    margin-top: 0;
     color: red;
 }
 
