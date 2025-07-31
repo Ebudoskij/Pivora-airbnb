@@ -39,7 +39,7 @@
             <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
             <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}">0</span> грн</p>
             <form th:action="@{/properties/delete/{propertyId}(propertyId=*{id})}" method="post" onsubmit="return confirm('Are sure about deleting this listing?')">
-                <button type="submit" class="delete-button">
+                <button type="submit" class="delete-button form-button">
                     Delete
                 </button>
             </form>

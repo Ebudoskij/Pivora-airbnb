@@ -22,7 +22,7 @@
                     <a class="nav-link" th:href="@{/bookings/list}">Your bookings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/users/profile}" th:if="${username}" th:text="${username}"> </a>
+                    <a class="nav-link" th:href="@{/users/profile}" th:if="${username}" th:text="'Welcome, ' + ${username} + '!'"> </a>
                 </li>
             </ul>
         </div>
@@ -57,11 +57,13 @@
                 <form th:action="@{/properties/search}" th:object="${searchDTO}" method="GET">
 
                     <label for="city">City</label>
-                    <input type="text" id ="city" th:field="*{city}" placeholder="Enter city" />
+                    <select th:if="${AvailableCities}" id="city" th:field="*{city}">
+                        <option th:each="cityName : ${AvailableCities}" th:text="${cityName}" th:value="${cityName}"></option>
+                    </select>
                     <p class = "errors" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> error </p>
 
                     <label for="check-in-date">Check-in</label>
-                    <input type="date" id="check-in-date" th:field="*{startDate}" />
+                    <input type="date" id="check-in-date" th:field="*{startDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
                     <p class = "errors" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"> error </p>
 
                     <label for="check-out-date">Check-out</label>

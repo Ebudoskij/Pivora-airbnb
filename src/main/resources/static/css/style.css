@@ -76,6 +76,10 @@ body {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
+
+    max-width: 80%;
+    width: fit-content;
+
     background-color: #f44336;
     color: white;
     padding: 16px 24px;
@@ -84,6 +88,11 @@ body {
     opacity: 1;
     transition: opacity 1s ease-out;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .main-container {
@@ -215,6 +224,9 @@ body {
     margin: 50px auto;
     background-color: white;
 }
+.form-container form{
+    width: 100%;
+}
 .form-container img {
     margin-bottom: 20px;
 }
@@ -235,13 +247,13 @@ body {
     font-size: 1rem;
 }
 
-.form-container input {
+.form-container input, select {
+    font-size: 1.2rem;
     width: 100%;
     padding: 15px;
     border: 1px solid #e1e1e1;
     border-radius: var(--border-radius);
     margin-bottom: 15px;
-    font-size: 16px;
     font-family: 'Roboto', 'Arial', sans-serif;
 }
 .form-container input[readonly]{
@@ -411,17 +423,6 @@ body {
 .delete-button{
     background-color: var(--dark-bg);
     width: 100%;
-    color: white;
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
 }
 .delete-button:hover{
     background-color: rgba(44, 62, 80, 0.95);

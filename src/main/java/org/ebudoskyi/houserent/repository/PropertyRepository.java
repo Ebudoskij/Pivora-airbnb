@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
@@ -22,4 +23,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findAvailablePropertiesByCityAndDates(@Param("city") String city,
                                                          @Param("startDate") LocalDate startDate,
                                                          @Param("endDate") LocalDate endDate);
+    @Query("SELECT DISTINCT city FROM Property")
+    Optional<List<String>> getCities();
 }

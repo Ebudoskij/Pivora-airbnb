@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.ebudoskyi.houserent.dto.PropertyCreationDTO;
 import org.ebudoskyi.houserent.dto.PropertyResponseDTO;
 import org.ebudoskyi.houserent.dto.PropertySearchDTO;
+import org.ebudoskyi.houserent.model.CurrencyRates;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.UserPrincipal;
 import org.ebudoskyi.houserent.service.PropertyImagesService;
@@ -77,10 +78,13 @@ public class PropertyController {
     public String searchProperties(
             @Valid @ModelAttribute("searchDTO") PropertySearchDTO searchDTO,
             BindingResult bindingResult,
-            Model model
+            Model model,
+            RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
-            return "dashboard";
+            redirectAttributes.addFlashAttribute("searchDTO", searchDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.searchDTO", bindingResult);
+            return "redirect:/";
         }
             List<PropertyResponseDTO> availableProperties = propertyService.getAvailableProperties(searchDTO);
             model.addAttribute("properties", availableProperties);
