@@ -22,8 +22,8 @@ public class UserRegisterDTO {
     private String email;
 
 
-    @Size(min = 8, message= "Password must be at least 8 symbols long")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$",
-            message = "Password must contain at least one uppercase letter, one digit and special symbol from list: !@#$%^&*")
+    //@Size(min = 8, message= "Password must be at least 8 symbols long")
+    //@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$",
+    //        message = "Password must contain at least one uppercase letter, one digit and special symbol from list: !@#$%^&*")
     private String password;
 }

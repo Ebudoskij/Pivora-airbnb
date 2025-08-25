@@ -16,7 +16,7 @@
                     <a class="nav-link" th:href="@{/properties/createProperty}">Create a listing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/properties/list}">Your listings</a>
+                    <a class="nav-link" th:href="@{/properties/list(currency=UAH)}">Your listings</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/bookings/list}">Your bookings</a>
@@ -55,6 +55,8 @@
                 </div>
 
                 <form th:action="@{/properties/search}" th:object="${searchDTO}" method="GET">
+
+                    <input type="hidden" name="currency" value="UAH">
 
                     <div th:if="${AvailableCities != null and !#lists.isEmpty(AvailableCities)}">
                         <label for="citySelect">City</label>

@@ -16,6 +16,7 @@ public class CurrencyRatesScheduler {
     }
 
     @Scheduled(cron = "0 0 * * * *")
+    //@PostConstruct
     public void scheduledCurrencyUpdate() {
         currencyRatesService.updateRatesFromApi();
     }

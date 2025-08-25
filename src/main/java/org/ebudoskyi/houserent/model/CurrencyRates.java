@@ -35,8 +35,4 @@ public class CurrencyRates {
     @NotNull
     @Column(nullable = false)
     private double GBP;
-
-    @NotNull
-    @Column(nullable = false)
-    private double CHF;
 }

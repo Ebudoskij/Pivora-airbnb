@@ -52,6 +52,7 @@ public class PropertyImagesService {
     @Transactional
     public List<String> getImages(Long propertyId) {
         return propertyImagesRepository.getAllByPropertyId(propertyId).stream()
+                .filter(img -> img.getImage() != null && img.getImage().length > 0)
                 .map(object -> "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(object.getImage()))
                 .collect(Collectors.toList());
     }

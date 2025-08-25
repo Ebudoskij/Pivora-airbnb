@@ -7,6 +7,7 @@ import org.ebudoskyi.houserent.dto.PropertySearchDTO;
 import org.ebudoskyi.houserent.model.CurrencyRates;
 import org.ebudoskyi.houserent.model.Property;
 import org.ebudoskyi.houserent.model.UserPrincipal;
+import org.ebudoskyi.houserent.service.CurrencyRatesApiServices.CurrencyRatesService;
 import org.ebudoskyi.houserent.service.PropertyImagesService;
 import org.ebudoskyi.houserent.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class PropertyController {
     private final PropertyImagesService propertyImagesService;
 
     @Autowired
-    public PropertyController(PropertyService propertyService,  PropertyImagesService propertyImagesService) {
+    public PropertyController(PropertyService propertyService,
+                              PropertyImagesService propertyImagesService) {
         this.propertyService = propertyService;
         this.propertyImagesService = propertyImagesService;
     }
@@ -54,29 +56,35 @@ public class PropertyController {
                     propertyDTO.getCity(),
                     propertyDTO.getLocation(),
                     propertyDTO.getPricePerNight(),
+                    propertyDTO.getCurrency(),
                     propertyDTO.getRooms());
             propertyImagesService.uploadOrUpdateImages(property.getId(), propertyDTO.getImages());
-            return "redirect:/properties/list";
+            return "redirect:/properties/list?currency=" + propertyDTO.getCurrency();
     }
 
     @PostMapping("/delete/{propertyId}")
-    public String deleteProperty(@PathVariable Long propertyId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public String deleteProperty(@PathVariable Long propertyId,
+                                 @AuthenticationPrincipal UserPrincipal userPrincipal) {
             Long userId = userPrincipal.getId();
             propertyService.deleteProperty(userId, propertyId);
             return "redirect:/properties/list";
     }
 
     @GetMapping("/list")
-    public String listProperties(Model model, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public String listProperties(@RequestParam("currency") String currency,
+                                 Model model,
+                                 @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long userId = userPrincipal.getId();
-        List<PropertyResponseDTO> properties = propertyService.getPropertiesByUserId(userId);
+        List<PropertyResponseDTO> properties = propertyService.getPropertiesByUserId(userId, currency);
         model.addAttribute("properties", properties);
+        model.addAttribute("currency", currency);
         return "properties/list";
     }
 
     @GetMapping("/search")
     public String searchProperties(
             @Valid @ModelAttribute("searchDTO") PropertySearchDTO searchDTO,
+            @RequestParam("currency") String currency,
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes
@@ -86,8 +94,9 @@ public class PropertyController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.searchDTO", bindingResult);
             return "redirect:/";
         }
-            List<PropertyResponseDTO> availableProperties = propertyService.getAvailableProperties(searchDTO);
+            List<PropertyResponseDTO> availableProperties = propertyService.getAvailableProperties(searchDTO, currency);
             model.addAttribute("properties", availableProperties);
+            model.addAttribute("currency", currency);
             return "/properties/search";
     }
 
@@ -130,6 +139,7 @@ public class PropertyController {
                     propertyEditingDTO.getCity(),
                     propertyEditingDTO.getLocation(),
                     propertyEditingDTO.getPricePerNight(),
+                    propertyEditingDTO.getCurrency(),
                     propertyEditingDTO.getRooms());
             propertyImagesService.uploadOrUpdateImages(propertyId, propertyEditingDTO.getImages());
         } catch (IllegalArgumentException e) {

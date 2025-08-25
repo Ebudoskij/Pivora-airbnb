@@ -29,7 +29,7 @@
         <p class = "errors" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> error </p>
 
         <label for="location">Location</label>
-        <input type="text" th:field="*{location}" id="location" placeholder="Enter detailed address">
+        <input type="text" th:field="*{location}" id="location" placeholder="Enter detailed address" required>
         <p class = "errors" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"> error </p>
 
         <label for="rooms">Amount of rooms</label>
@@ -38,10 +38,16 @@
 
         <label for="pricePerNight">Price per night</label>
         <input type="text" th:field="*{pricePerNight}" id="pricePerNight" placeholder="Enter price" required>
+        <select th:field="*{currency}">
+            <option th:value="UAH" selected>₴</option>
+            <option th:value="USD">$</option>
+            <option th:value="EUR">€</option>
+            <option th:value="GBP">£</option>
+        </select>
         <p class = "errors" th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"> error </p>
 
-        <label for="Images">Upload images of accommodation (under 20MB in summary):</label>
-        <input type="file" multiple accept="image/*" id="Images" th:field="*{images}">
+        <label for="images">Upload images of accommodation (under 20MB in summary):</label>
+        <input type="file" multiple accept="image/*" id="images" th:field="*{images}">
         <p class = "errors" th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"> error </p>
 
         <button type="submit" class="form-button">Create</button>

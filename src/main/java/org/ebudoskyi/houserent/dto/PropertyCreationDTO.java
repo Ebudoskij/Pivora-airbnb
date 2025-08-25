@@ -32,6 +32,8 @@ public class PropertyCreationDTO {
     @NotNull(message = "price is mandatory")
     @Positive(message="Price must be a positive number!")
     private Double pricePerNight;
+    @NotBlank
+    private String currency;
     List<MultipartFile> Images;
     public PropertyCreationDTO(String title, String description, String city, String location, Integer rooms, Double pricePerNight) {
         this.title = title;

@@ -63,7 +63,6 @@ public class CurrencyRatesService {
         rates.put("USD", result.getConversion_rates().getUSD());
         rates.put("EUR", result.getConversion_rates().getEUR());
         rates.put("GBP", result.getConversion_rates().getGBP());
-        rates.put("CHF", result.getConversion_rates().getCHF());
         Map<String, Double> adjustedRates = rates.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -73,7 +72,6 @@ public class CurrencyRatesService {
         currencyRates.setUSD(adjustedRates.get("USD"));
         currencyRates.setEUR(adjustedRates.get("EUR"));
         currencyRates.setGBP(adjustedRates.get("GBP"));
-        currencyRates.setCHF(adjustedRates.get("CHF"));
         return currencyRates;
     }
 }

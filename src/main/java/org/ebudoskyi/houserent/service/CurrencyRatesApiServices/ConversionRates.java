@@ -17,6 +17,4 @@ public class ConversionRates {
     private double EUR;
     @JsonProperty("GBP")
     private double GBP;
-    @JsonProperty("CHF")
-    private double CHF;
 }

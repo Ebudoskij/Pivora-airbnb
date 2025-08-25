@@ -6,7 +6,8 @@ target/
 
 # Ignore config files
 .env
-
+#ignore target files
+/target/
 ### STS ###
 .apt_generated
 .classpath

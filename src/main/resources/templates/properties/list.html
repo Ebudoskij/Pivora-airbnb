@@ -23,21 +23,25 @@
     </div>
 
     <div th:each="property, stat : ${properties}" th:object="${property}" class="property-desc">
-            <div class="slider" th:id="'slider-' + ${stat.index}">
-                <button th:if="${property.images.size() != 0}" th:class="'prev prev-' + ${stat.index}">&#10094</button>
+            <div class="slider" th:id="'slider-' + ${stat.index}" th:if="${property.images != null and !property.images.isEmpty()}">
+                <button th:class="'prev prev-' + ${stat.index}">&#10094</button>
 
                 <div class="slides">
                     <img th:each="image : ${property.images}" th:src="${image}" th:class="'property-image-' + ${stat.index}" alt="Property photo">
                 </div>
 
-                <button th:if="${property.images.size() != 0}" th:class="'next next-' + ${stat.index}">&#10095</button>
+                <button th:class="'next next-' + ${stat.index}">&#10095</button>
             </div>
 
             <h2 th:text="*{title}">Title</h2>
             <p><strong>Description:</strong> <span th:text="*{description}">description</span></p>
             <p><strong>City:</strong> <span th:text="|*{city}, *{location}|"> </span></p>
             <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}">0</span></p>
-            <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}">0</span> грн</p>
+            <p>
+                <strong>Price per night:</strong>
+                <span th:text="*{pricePerNight}">0</span>
+                <span th:text="${currency}">UAH</span>
+            </p>
             <form th:action="@{/properties/delete/{propertyId}(propertyId=*{id})}" method="post" onsubmit="return confirm('Are sure about deleting this listing?')">
                 <button type="submit" class="form-button delete-button">
                     Delete

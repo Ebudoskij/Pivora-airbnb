@@ -17,6 +17,7 @@ public class PropertyResponseDTO {
     private String city;
     private String location;
     private double pricePerNight;
+    private String currency;
     private int rooms;
     private List<String>  images;
     private String phoneNumber;

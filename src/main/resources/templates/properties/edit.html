@@ -52,6 +52,12 @@
 
         <label for="pricePerNight">Price per night</label>
         <input type="text" th:field="*{pricePerNight}" id="pricePerNight" placeholder="Enter price" required>
+        <select th:field="*{currency}">
+            <option th:value="USD">$</option>
+            <option th:value="EUR">€</option>
+            <option th:value="UAH" selected>₴</option>
+            <option th:value="GBP">£</option>
+        </select>
         <p class = "errors" th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"> error </p>
 
         <button type="submit" class="form-button">Edit</button>

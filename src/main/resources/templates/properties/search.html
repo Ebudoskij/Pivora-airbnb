@@ -32,7 +32,11 @@
         <p><strong>City:</strong> <span th:text="*{city}">City</span></p>
         <p th:if="*{location}"><strong>Location:</strong> <span th:text="*{location}"></span></p>
         <p><strong>Amount of rooms:</strong> <span th:text="*{rooms}"></span></p>
-        <p><strong>Price per night:</strong> <span th:text="*{pricePerNight}"></span> грн</p>
+        <p>
+            <strong>Price per night:</strong>
+            <span th:text="*{pricePerNight}">0</span>
+            <span th:text="${currency}">UAH</span>
+        </p>
         <p th:if="*{phoneNumber}"><strong>Host`s phone number:</strong> <span th:text="*{phoneNumber}"></span></p>
         <a th:href="@{/bookings/create/{propertyId}(propertyId=*{id})}">
             <button type="button" class="edit-button">Book now</button>
