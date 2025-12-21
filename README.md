@@ -47,7 +47,7 @@
 
 - Реєстрація та логін для користувачів - ✅
 - Створення, редагування, видалення оголошень - ✅
-- Завантаження фото, управління доступністю - ❌
+- Завантаження фото, управління доступністю - ✅
 - Пошук житла за фільтрами - ✅
 - Бронювання з вибором дат - ✅
 - Онлайн-оплата (опціонально) - ❌
@@ -68,13 +68,12 @@
 - Java
 - Spring Boot
 - Hibernate (JPA)
-- PostgreSQL / H2
+- PostgreSQL
 - Spring Security
 - Maven
-- (Опційно) Stripe або PayPal API - не реалізовано
+- Stripe або PayPal API - не реалізовано
 
 > 💡 Архітектура: `model` — `repository` — `service` — `controller` - `view`, з розділенням DTO та entity.
 
 👨‍💻 Автори
 - [Ebudoskij](https://github.com/Ebudoskij)
-- [LoFiSwanL](https://github.com/LoFiSwanL)
